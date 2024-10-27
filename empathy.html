@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI - Empathy Map & Implementation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --primary-dark: #FF5252;
+            --secondary: #4ECDC4;
+            --accent: #45B7D1;
+            --dark: #2C3E50;
+            --light: #F7F9FC;
+            --success: #2ECC71;
+            --warning: #F1C40F;
+            --danger: #E74C3C;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        header h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .empathy-map {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .empathy-section {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid var(--gray-200);
+        }
+
+        .empathy-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .empathy-section h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon {
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .phase-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+        }
+
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--gray-200);
+            border-radius: 2px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .feature-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-list li::before {
+            content: "→";
+            color: var(--secondary);
+            position: absolute;
+            left: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-list li:hover::before {
+            transform: translateX(3px);
+        }
+
+        .section-title {
+            color: var(--dark);
+            margin: 2rem 0 1rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .risk-section {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--gray-200);
+        }
+
+        .risk-level {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-left: 1rem;
+        }
+
+        .risk-high {
+            background: var(--danger);
+            color: white;
+        }
+
+        .risk-medium {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .risk-low {
+            background: var(--success);
+            color: white;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--success);
+            margin: 1rem 0;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: center;
+            }
+
+            .empathy-section, .phase-card, .risk-section, .metric-card {
+                padding: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Animation for progress bars */
+        @keyframes fillProgress {
+            from { width: 0%; }
+            to { width: var(--progress); }
+        }
+
+        .loading {
+            animation: fillProgress 1.5s ease-out forwards;
+        }
+
+        /* New status indicator styles */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .status-active {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-pending {
+            background: var(--warning);
+            color: var(--dark);
+        }
+
+        .status-upcoming {
+            background: var(--gray-300);
+            color: var(--dark);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-heartbeat"></i> MamaAI</h1>
+            <h2>Component-Based Empathy Map & Implementation Strategy</h2>
+            <nav class="nav-menu">
+                <a href="#empathy-map" class="nav-item">Empathy Map</a>
+                <a href="#implementation" class="nav-item">Implementation</a>
+                <a href="#risks" class="nav-item">Risks</a>
+                <a href="#metrics" class="nav-item">Metrics</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="empathy-map">
+            <h2 class="section-title">
+                <i class="fas fa-brain"></i>
+                Primary User Empathy Map: Pregnant Woman in Rural Kenya
+            </h2>
+            <div class="empathy-map">
+                <div class="empathy-section">
+                    <h3><i class="fas fa-thought-bubble"></i> THINKS & FEELS</h3>
+                    <h4>Health Concerns:</h4>
+                    <ul class="feature-list">
+                        <li class="tooltip" data-tooltip="High priority concern">Worried about pregnancy complications</li>
+                        <li class="tooltip" data-tooltip="Access within 5km radius">Anxious about access to quality care</li>
+                        <li class="tooltip" data-tooltip="Average cost: $50-200">Concerned about costs</li>
+                        <li>Values traditional practices</li>
+                        <li>Fears emergency situations</li>
+                    </ul>
+                </div>
+
+                <div class="empathy-section">
+                    <h3><i class="fas fa-eye"></i> SEES</h3>
+                    <h4>Healthcare Environment:</h4>
+                    <ul class="feature-list">
+                        <li class="tooltip" data-tooltip="Average distance: 7km">Limited health facilities</li>
+                        <li class="tooltip" data-tooltip="Average wait: 2-3 hours">Long queues at clinics</li>
+                        <li>Community health workers</li>
+                        <li>Traditional birth attendants</li>
+                        <li class="tooltip" data-tooltip="70% smartphone penetration">Other women using mobile phones</li>
+                    </ul>
+                </div>
+
+                <div class="empathy-section">
+                    <h3><i class="fas fa-comments"></i> SAYS & DOES</h3>
+                    <h4>Health Behaviors:</h4>
+                    <ul class="feature-list">
+                        <li>Combines traditional and modern care</li>
+                        <li class="tooltip" data-tooltip="Weekly community meetings">Seeks community advice</li>
+                        <li class="tooltip" data-tooltip="M-PESA adoption: 90%">Uses mobile money for payments</li>
+                        <li>Shares experiences with other mothers</li>
+                    </ul>
+                </div>
+
+                <div class="empathy-section">
+                    <h3><i class="fas fa-ear-listen"></i> HEARS</h3>
+                    <h4>Community Messages:</h4>
+                    <ul class="feature-list">
+                        <li>Family health advice</li>
+                        <li>Traditional practices</li>
+                        <li class="tooltip" data-tooltip="Shared in community meetings">Success stories</li>
+                        <li>Horror stories</li>
+                        <li>Community announcements</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="implementation">
+            <h2 class="section-title">
+                <i class="fas fa-tasks"></i>
+                Implementation Phases
+            </h2>
+            <div class="phase-grid">
+                <div class="phase-card">
+                    <h3>Phase 1: Essential Features</h3>
+                    <span class="status-indicator status-active">Active</span>
+                    <ul class="feature-list">
+                        <li>Offline-first design</li>
+                        <li>Emergency button</li>
+                        <li>Basic health timeline</li>
+                        <li>Simple tips display</li>
+                    </ul>
+                    <div class="progress-bar">
+                        <div class="progress-fill loading" style="--progress: 75%"></div>
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <h3>Phase 2: Core Features</h3>
+                    <span class="status-indicator status-pending">In Progress</span>
+                    <ul class="feature-list">
+                        <li>Basic learning modules</li>
+                        <li>Multi-language support</li>
+                        <li>Simple rewards</li>
+                        <li>Offline content</li>
+                    </ul>
+                    <div class="progress-bar">
+                        <div class="progress-fill loading" style="--progress: 45%"></div>
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <h3>Phase 3: Advanced Features</h3>
+                    <span class="status-indicator status-upcoming">Upcoming</span>
+                    <ul class="feature-list">
+                        <li>Token Economics</li>
+                        <li>AI Integration</li>
+                        <li>Provider Portal</li>
+                    </ul>
+                    <div class="progress-bar">
+                        <div class="progress-fill loading" style="--progress: 15%"></div>
+                    </div>
+                </div>
+
+                <div class="phase-card">
+                    <h3>Phase 4: Full Integration</h3>
+                    <span class="status-indicator status-upcoming">Planned</span>
+                    <ul class="feature-list">
+                        <li>Health trends</li>
+                        <li>Supply tracking</li>
+                        <li>Performance metrics</li>
+                        <li>Predictive analytics</li>
+                    </ul>
+                    <div class="progress-bar">
+                        <div class="progress-fill loading" style="--progress: 5%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="risks">
+            <h2 class="section-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                Risk Assessment
+            </h2>
+            <div class="risk-section">
+                <h3>Technical Risks</h3>
+                <ul class="feature-list">
+                    <li>
+                        Offline functionality failures
+                        <span class="risk-level risk-high">High Risk</span>
+                    </li>
+                    <li>
+                        Data synchronization issues
+                        <span class="risk-level risk-medium">Medium Risk</span>
+                    </li>
+                    <li>
+                        Battery life concerns
+                        <span class="risk-level risk-medium">Medium Risk</span>
+                    </li>
+                    <li>
+                        Network reliability
+                        <span class="risk-level risk-high">High Risk</span>
+                    </li>
+                    <li>
+                        Device compatibility
+                        <span class="risk-level risk-low">Low Risk</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="metrics">
+            <h2 class="section-title">
+                <i class="fas fa-chart-line"></i>
+                Success Metrics
+            </h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>User Engagement</h3>
+                    <div class="metric-value">78%</div>
+                    <ul class="feature-list">
+                        <li class="tooltip" data-tooltip="Daily Active Users: 2,450">Active daily users</li>
+                        <li class="tooltip" data-tooltip="Most used: Emergency Button">Feature usage patterns</li>
+                        <li class="tooltip" data-tooltip="85% work offline">Offline usage rates</li>
+                        <li class="tooltip" data-tooltip="Primary: Swahili">Language preferences</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <h3>Health Outcomes</h3>
+                    <div class="metric-value">92%</div>
+                    <ul class="feature-list">
+                        <li class="tooltip" data-tooltip="Average: 12 minutes">Emergency response times</li>
+                        <li class="tooltip" data-tooltip="Increased by 45%">Facility delivery rates</li>
+                        <li class="tooltip" data-tooltip="4+ visits: 85%">Prenatal visit compliance</li>
+                        <li class="tooltip" data-tooltip="Early detection: 68%">Complication detection</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <h3>Technical Performance</h3>
+                    <div class="metric-value">95%</div>
+                    <ul class="feature-list">
+                        <li class="tooltip" data-tooltip="Success rate: 98%">Offline reliability</li>
+                        <li class="tooltip" data-tooltip="Success rate: 92%">Sync success rates</li>
+                        <li class="tooltip" data-tooltip="Average: 1.2s">Response times</li>
+                        <li class="tooltip" data-tooltip="Rate: 0.5%">Error rates</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Intersection Observer for animate-on-scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('loading');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe all progress fills
+        document.querySelectorAll('.progress-fill').forEach(fill => {
+            observer.observe(fill);
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

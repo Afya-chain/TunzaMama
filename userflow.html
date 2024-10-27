@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+            font-family: -apple-system, system-ui, sans-serif;
+        }
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .controls button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            background: #2c3e50;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .controls button:hover {
+            background: #34495e;
+            transform: translateY(-1px);
+        }
+        .controls button.active {
+            background: #e74c3c;
+        }
+        .section-info {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 350px;
+            display: none;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .section-info h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        .section-info ul {
+            margin: 10px 0;
+            padding-left: 20px;
+            list-style-type: disc;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+        }
+        .diagram-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin: 20px auto;
+            width: 95%;
+            min-height: 90vh;
+        }
+        .title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        #mainDiagram {
+            width: 100%;
+            height: 80vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button onclick="toggleSection('registration')">Registration</button>
+        <button onclick="toggleSection('pregnancy')">Pregnancy Journey</button>
+        <button onclick="toggleSection('emergency')">Emergency</button>
+        <button onclick="toggleSection('education')">Education</button>
+        <button onclick="toggleSection('blockchain')">Blockchain</button>
+        <button onclick="toggleSection('provider')">Provider System</button>
+        <button onclick="toggleSection('analytics')">Analytics</button>
+        <button onclick="resetView()">Reset View</button>
+    </div>
+    <div class="section-info" id="sectionInfo"></div>
+    <div class="diagram-container">
+        <div class="title">MamaAI Complete System Flow</div>
+        <div class="mermaid" id="mainDiagram">
+        %%{init: {
+            'theme': 'base',
+            'themeVariables': {
+                'fontSize': '26px',
+                'fontFamily': 'Arial',
+                'primaryColor': '#2c3e50',
+                'primaryTextColor': 'white',
+                'secondaryColor': '#3498db',
+                'tertiaryColor': '#e74c3c'
+            }
+        }}%%
+        graph TD
+            A[MamaAI System]:::root
+            
+            %% Main Systems
+            B[Access & Registration]:::main
+            C[User Journeys]:::main
+            D[Blockchain & Records]:::main
+            E[Provider System]:::main
+            F[Analytics & Reports]:::main
+            
+            %% Core Connections
+            A --> B & C & D & E & F
+            
+            %% Registration Flow
+            B --> BA[User Registration]:::sub
+            BA --> BA1[Basic Info]:::detail
+            BA --> BA2[ID Verify]:::detail
+            BA --> BA3[Wallet Setup]:::detail
+            
+            %% User Journeys
+            C --> CA[Pregnancy Management]:::sub
+            C --> CB[Emergency Response]:::sub
+            C --> CC[Education Platform]:::sub
+            
+            CA --> CA1[Health Tracking]:::detail
+            CA --> CA2[Care Plans]:::detail
+            CB --> CB1[Alert System]:::detail
+            CB --> CB2[Response Protocol]:::detail
+            CC --> CC1[Learning Modules]:::detail
+            CC --> CC2[Community Support]:::detail
+            
+            %% Blockchain System
+            D --> DA[Token Economics]:::sub
+            D --> DB[Health Records]:::sub
+            
+            DA --> DA1[Token Earning]:::detail
+            DA --> DA2[Token Usage]:::detail
+            DB --> DB1[Record Creation]:::detail
+            DB --> DB2[Access Control]:::detail
+            
+            %% Provider System
+            E --> EA[Clinical Management]:::sub
+            E --> EB[CHW Operations]:::sub
+            
+            EA --> EA1[Patient Care]:::detail
+            EA --> EA2[Emergency Handling]:::detail
+            EB --> EB1[Field Operations]:::detail
+            EB --> EB2[Data Collection]:::detail
+            
+            %% Analytics
+            F --> FA[Health Metrics]:::sub
+            F --> FB[Quality Control]:::sub
+            
+            FA --> FA1[Outcomes]:::detail
+            FA --> FA2[Resource Usage]:::detail
+            FB --> FB1[Service Quality]:::detail
+            FB --> FB2[System Performance]:::detail
+
+            %% Styling
+            classDef root fill:#2c3e50,stroke:#34495e,stroke-width:4px,color:white,font-size:28px;
+            classDef main fill:#3498db,stroke:#2980b9,stroke-width:3px,color:white,font-size:24px;
+            classDef sub fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:white,font-size:22px;
+            classDef detail fill:#95a5a6,stroke:#7f8c8d,stroke-width:2px,color:white,font-size:20px;
+        </div>
+    </div>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis',
+                rankSpacing: 150,
+                nodeSpacing: 150,
+                padding: 50
+            }
+        });
+
+        const sectionInfo = {
+            registration: {
+                title: "Registration System",
+                description: "Complete user onboarding process including basic information collection, identity verification, and digital wallet setup.",
+                key_features: ["Personal Data Collection", "ID Verification", "Digital Wallet Creation", "M-PESA Integration", "Profile Setup", "Emergency Contacts"]
+            },
+            pregnancy: {
+                title: "Pregnancy Journey",
+                description: "Comprehensive pregnancy management system for monitoring health, scheduling care, and coordinating support.",
+                key_features: ["Health Tracking", "Care Planning", "Appointment Management", "Risk Assessment", "Support Network", "Resource Planning"]
+            },
+            emergency: {
+                title: "Emergency Response",
+                description: "Rapid response system with multiple trigger options and automated coordination.",
+                key_features: ["One-Touch Alert", "Voice Activation", "Location Services", "Transport Dispatch", "Provider Alert", "Family Notification"]
+            },
+            education: {
+                title: "Education Platform",
+                description: "Comprehensive learning and support system for maternal health education.",
+                key_features: ["Health Education", "Risk Management", "Interactive Learning", "Community Support", "Expert Access", "Resource Network"]
+            },
+            blockchain: {
+                title: "Blockchain System",
+                description: "Token economics and health records management on blockchain.",
+                key_features: ["Token Earning", "Service Access", "Health NFT", "Record Management", "Access Control", "Data Integration"]
+            },
+            provider: {
+                title: "Provider System",
+                description: "Healthcare provider and community health worker management system.",
+                key_features: ["Patient Care", "Emergency Response", "Field Operations", "Data Collection", "Resource Management", "Care Planning"]
+            },
+            analytics: {
+                title: "Analytics & Quality",
+                description: "Comprehensive data analysis and quality control system.",
+                key_features: ["Health Metrics", "Resource Analysis", "Outcome Monitoring", "Service Quality", "Report Generation", "System Performance"]
+            }
+        };
+
+        function toggleSection(section) {
+            const info = sectionInfo[section];
+            const infoBox = document.getElementById("sectionInfo");
+            if (infoBox.style.display === "block" && infoBox.dataset.section === section) {
+                infoBox.style.display = "none";
+                return;
+            }
+            infoBox.innerHTML = `<h3>${info.title}</h3><p>${info.description}</p><ul>${info.key_features.map(feature => `<li>${feature}</li>`).join('')}</ul>`;
+            infoBox.style.display = "block";
+            infoBox.dataset.section = section;
+        }
+
+        function resetView() {
+            document.getElementById("sectionInfo").style.display = "none";
+        }
+    </script>
+</body>
+</html>

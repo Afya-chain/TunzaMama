@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI User Personas</title>
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #45b7af;
+            --text-color: #2d3436;
+            --background-color: #f9f9f9;
+            --card-background: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .persona-card {
+            background: var(--card-background);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .persona-header {
+            border-bottom: 2px solid var(--secondary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+        }
+
+        .persona-name {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .persona-quote {
+            font-style: italic;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            margin: 1.5rem 0 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        .info-list {
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+        .info-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .info-list li:before {
+            content: "•";
+            color: var(--secondary-color);
+            margin-right: 0.5rem;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: var(--secondary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .personas-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .persona-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MamaAI User Personas</h1>
+        
+        <div class="personas-grid">
+            <!-- Rural First-Time Mother -->
+            <div class="persona-card">
+                <div class="persona-header">
+                    <h2 class="persona-name">Faith Wanjiru</h2>
+                    <p class="persona-quote">"I want to have a safe pregnancy but sometimes feel isolated from good healthcare"</p>
+                </div>
+
+                <h3 class="section-title">Demographics</h3>
+                <ul class="info-list">
+                    <li>Age: 22</li>
+                    <li>Location: Rural Machakos County</li>
+                    <li>Occupation: Small-scale farmer</li>
+                    <li>Income: Ksh 15,000/month</li>
+                </ul>
+
+                <h3 class="section-title">Technology Profile</h3>
+                <ul class="info-list">
+                    <li>Basic smartphone (Tecno)</li>
+                    <li>Limited data bundle</li>
+                    <li>Active WhatsApp user</li>
+                </ul>
+
+                <h3 class="section-title">Key Needs</h3>
+                <div class="tag-container">
+                    <span class="tag">Offline access</span>
+                    <span class="tag">Emergency button</span>
+                    <span class="tag">Voice instructions</span>
+                    <span class="tag">M-PESA integration</span>
+                </div>
+            </div>
+
+            <!-- Urban Working Mother -->
+            <div class="persona-card">
+                <div class="persona-header">
+                    <h2 class="persona-name">Linda Otieno</h2>
+                    <p class="persona-quote">"I need efficient, quality healthcare that fits my busy schedule"</p>
+                </div>
+
+                <h3 class="section-title">Demographics</h3>
+                <ul class="info-list">
+                    <li>Age: 31</li>
+                    <li>Location: Nairobi</li>
+                    <li>Occupation: Bank officer</li>
+                    <li>Income: Ksh 120,000/month</li>
+                </ul>
+
+                <h3 class="section-title">Technology Profile</h3>
+                <ul class="info-list">
+                    <li>iPhone 11</li>
+                    <li>Home WiFi + 4G</li>
+                    <li>Multiple health apps</li>
+                </ul>
+
+                <h3 class="section-title">Key Needs</h3>
+                <div class="tag-container">
+                    <span class="tag">Calendar integration</span>
+                    <span class="tag">Provider booking</span>
+                    <span class="tag">Health tracking</span>
+                    <span class="tag">Data security</span>
+                </div>
+            </div>
+
+            <!-- Healthcare Provider -->
+            <div class="persona-card">
+                <div class="persona-header">
+                    <h2 class="persona-name">Dr. Sarah Kimani</h2>
+                    <p class="persona-quote">"I want to provide better care through efficient digital solutions"</p>
+                </div>
+
+                <h3 class="section-title">Demographics</h3>
+                <ul class="info-list">
+                    <li>Age: 35</li>
+                    <li>Role: OB/GYN</li>
+                    <li>Experience: 8 years</li>
+                    <li>Patients: 200+ monthly</li>
+                </ul>
+
+                <h3 class="section-title">Technology Profile</h3>
+                <ul class="info-list">
+                    <li>Multiple devices</li>
+                    <li>EMR experience</li>
+                    <li>Clinical apps</li>
+                </ul>
+
+                <h3 class="section-title">Key Needs</h3>
+                <div class="tag-container">
+                    <span class="tag">Patient dashboard</span>
+                    <span class="tag">Clinical protocols</span>
+                    <span class="tag">Emergency alerts</span>
+                    <span class="tag">Team messaging</span>
+                </div>
+            </div>
+
+            <!-- Community Health Worker -->
+            <div class="persona-card">
+                <div class="persona-header">
+                    <h2 class="persona-name">Grace Muthoni</h2>
+                    <p class="persona-quote">"I bridge the gap between my community and healthcare services"</p>
+                </div>
+
+                <h3 class="section-title">Demographics</h3>
+                <ul class="info-list">
+                    <li>Age: 45</li>
+                    <li>Role: CHW Supervisor</li>
+                    <li>Experience: 15 years</li>
+                    <li>Coverage: 100 households</li>
+                </ul>
+
+                <h3 class="section-title">Technology Profile</h3>
+                <ul class="info-list">
+                    <li>Basic smartphone</li>
+                    <li>Variable internet access</li>
+                    <li>Health tracking tools</li>
+                </ul>
+
+                <h3 class="section-title">Key Needs</h3>
+                <div class="tag-container">
+                    <span class="tag">Household tracking</span>
+                    <span class="tag">Offline forms</span>
+                    <span class="tag">Emergency alerts</span>
+                    <span class="tag">Simple reporting</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

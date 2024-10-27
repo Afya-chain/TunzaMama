@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI UX Research Plan</title>
+    <style>
+        :root {
+            /* Updated color palette - maternal health focused */
+            --primary-color: #FF69B4;       /* Soft pink */
+            --primary-light: #FFB6C1;       /* Lighter pink */
+            --primary-dark: #DB5A9B;        /* Darker pink */
+            --secondary-color: #4A90E2;     /* Calming blue */
+            --secondary-light: #64A6F4;     /* Lighter blue */
+            --accent-color: #8e44ad;        /* Purple for emphasis */
+            --success-color: #27AE60;       /* Green for metrics */
+            --warning-color: #F39C12;       /* Orange for alerts */
+            --bg-color: #F7F9FC;           /* Light background */
+            --card-bg: #FFFFFF;            /* Card background */
+            --text-color: #2C3E50;         /* Main text */
+            --text-light: #7F8C8D;         /* Secondary text */
+            --border-radius: 12px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            --gradient-secondary: linear-gradient(135deg, var(--secondary-color), var(--secondary-light));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Enhanced Headers */
+        h1 {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            font-size: 2.5rem;
+            margin: -2rem -2rem 2rem -2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: 2rem;
+            margin-top: 3rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary-light);
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: var(--gradient-primary);
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        h4 {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        /* Enhanced Components */
+        .component {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary-color);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .component:hover {
+            transform: translateX(5px) translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-left-color: var(--primary-dark);
+        }
+
+        /* Enhanced Lists */
+        .tasks li::before {
+            background: var(--gradient-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Enhanced Metrics */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            border-top: 4px solid var(--secondary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .success-metric {
+            color: var(--success-color);
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        /* Enhanced Technical Section */
+        .technical-section {
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .technical-section h3,
+        .technical-section h4 {
+            color: white;
+            border-bottom-color: rgba(255,255,255,0.2);
+        }
+
+        .technical-section ul {
+            list-style: none;
+        }
+
+        .technical-section li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .technical-section li:last-child {
+            border-bottom: none;
+        }
+
+        /* Additional Visual Elements */
+        .section {
+            position: relative;
+            padding: 2rem;
+            margin: 2rem 0;
+            background: rgba(255,255,255,0.8);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+                margin: -1rem -1rem 1rem -1rem;
+                padding: 1.5rem;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .component {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MamaAI Component-Focused UX Research Plan</h1>
+
+        <section class="section">
+            <h2>1. User Research Phase</h2>
+            
+            <div class="component">
+                <h3>Home Screen Research</h3>
+                <h4>Main Questions:</h4>
+                <ul>
+                    <li>Walk me through how you track your pregnancy progress currently</li>
+                    <li>In an emergency, what steps do you take to get help?</li>
+                    <li>How do you prefer to receive daily health information?</li>
+                </ul>
+                <h4>Observation Tasks:</h4>
+                <ul>
+                    <li>Watch users organize pregnancy-related information</li>
+                    <li>Observe emergency response behaviors</li>
+                    <li>Monitor daily health information consumption</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Health Assessment Research</h3>
+                <h4>Main Questions:</h4>
+                <ul>
+                    <li>How do you currently decide whether to visit a health facility?</li>
+                    <li>What symptoms make you most concerned during pregnancy?</li>
+                    <li>How do you share health concerns with healthcare providers?</li>
+                </ul>
+                <h4>Observation Tasks:</h4>
+                <ul>
+                    <li>Watch users describe symptoms</li>
+                    <li>Observe decision-making process for seeking care</li>
+                    <li>Monitor interaction with existing health apps</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Education Hub Research</h3>
+                <h4>Main Questions:</h4>
+                <ul>
+                    <li>What languages do you prefer for health information?</li>
+                    <li>How do you currently learn about pregnancy and childcare?</li>
+                    <li>What motivates you to complete educational content?</li>
+                </ul>
+                <h4>Observation Tasks:</h4>
+                <ul>
+                    <li>Observe users interacting with educational content</li>
+                    <li>Monitor language preferences and switching</li>
+                    <li>Watch quiz/game interaction patterns</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Care Connector Research</h3>
+                <h4>Main Questions:</h4>
+                <ul>
+                    <li>How do you currently find and choose healthcare facilities?</li>
+                    <li>What challenges do you face in scheduling appointments?</li>
+                    <li>What would make you comfortable with virtual consultations?</li>
+                </ul>
+                <h4>Observation Tasks:</h4>
+                <ul>
+                    <li>Watch facility selection process</li>
+                    <li>Observe appointment booking behaviors</li>
+                    <li>Monitor virtual consultation comfort levels</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Community Support Research</h3>
+                <h4>Main Questions:</h4>
+                <ul>
+                    <li>How do you connect with other pregnant women?</li>
+                    <li>What role do local women's groups play in your pregnancy?</li>
+                    <li>What type of support do you seek from the community?</li>
+                </ul>
+                <h4>Observation Tasks:</h4>
+                <ul>
+                    <li>Observe community interaction patterns</li>
+                    <li>Monitor support-seeking behaviors</li>
+                    <li>Watch group participation dynamics</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Health Worker Portal Research</h3>
+                <h4>Main Questions:</h4>
+                <ul>
+                    <li>What information do you need to make care decisions?</li>
+                    <li>How do you currently manage patient records?</li>
+                    <li>What challenges do you face in emergency situations?</li>
+                </ul>
+                <h4>Observation Tasks:</h4>
+                <ul>
+                    <li>Watch health worker decision-making process</li>
+                    <li>Observe record management practices</li>
+                    <li>Monitor emergency response protocols</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Data Analytics Dashboard Research</h3>
+                <h4>Main Questions:</h4>
+                <ul>
+                    <li>What metrics are most important for maternal health monitoring?</li>
+                    <li>How do you currently track supply chain issues?</li>
+                    <li>What performance indicators matter most?</li>
+                </ul>
+                <h4>Observation Tasks:</h4>
+                <ul>
+                    <li>Watch data analysis workflows</li>
+                    <li>Observe supply chain management practices</li>
+                    <li>Monitor performance tracking methods</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>2. Prototype Design by Component</h2>
+            
+            <div class="component">
+                <h3>Home Screen</h3>
+                <h4>Core Features:</h4>
+                <ul>
+                    <li>Blockchain-secured timeline</li>
+                    <li>Emergency smart contract trigger</li>
+                    <li>Token-incentivized tip engagement</li>
+                    <li>Offline-first architecture</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Health Assessment</h3>
+                <h4>Core Features:</h4>
+                <ul>
+                    <li>AI symptom analysis</li>
+                    <li>Blockchain-verified risk scores</li>
+                    <li>Smart contract referrals</li>
+                    <li>Offline assessment capability</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Education Hub</h3>
+                <h4>Core Features:</h4>
+                <ul>
+                    <li>Token-rewarded learning</li>
+                    <li>Multi-language blockchain content</li>
+                    <li>Offline educational modules</li>
+                    <li>Progress-tracking NFTs</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Care Connector</h3>
+                <h4>Core Features:</h4>
+                <ul>
+                    <li>Provider verification chain</li>
+                    <li>Smart contract appointments</li>
+                    <li>Blockchain payment integration</li>
+                    <li>Offline facility database</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Community Support</h3>
+                <h4>Core Features:</h4>
+                <ul>
+                    <li>Reputation token system</li>
+                    <li>Verified experience sharing</li>
+                    <li>Community reward pool</li>
+                    <li>Offline community access</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Health Worker Portal</h3>
+                <h4>Core Features:</h4>
+                <ul>
+                    <li>Verified credentials chain</li>
+                    <li>Smart contract protocols</li>
+                    <li>Token-based incentives</li>
+                    <li>Offline synchronization</li>
+                </ul>
+            </div>
+
+            <div class="component">
+                <h3>Analytics Dashboard</h3>
+                <h4>Core Features:</h4>
+                <ul>
+                    <li>Blockchain data verification</li>
+                    <li>Supply chain tracking</li>
+                    <li>Performance token metrics</li>
+                    <li>Offline analytics capability</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>3. Testing Protocol by Component</h2>
+            
+            <div class="component">
+                <h3>Home Screen Testing</h3>
+                <h4>Tasks:</h4>
+                <ol class="tasks">
+                    <li>Access pregnancy timeline</li>
+                    <li>Trigger emergency response</li>
+                    <li>Interact with health tips</li>
+                    <li>Test offline functionality</li>
+                </ol>
+            </div>
+
+            <div class="component">
+                <h3>Health Assessment Testing</h3>
+                <h4>Tasks:</h4>
+                <ol class="tasks">
+                    <li>Complete symptom check</li>
+                    <li>Review AI recommendations</li>
+                    <li>Follow referral process</li>
+                    <li>Test offline assessment</li>
+                </ol>
+            </div>
+
+            <div class="component">
+                <h3>Education Hub Testing</h3>
+                <h4>Tasks:</h4>
+                <ol class="tasks">
+                    <li>Complete learning module</li>
+                    <li>Switch languages</li>
+                    <li>Earn education tokens</li>
+                    <li>Access offline content</li>
+                </ol>
+            </div>
+
+            <div class="component">
+                <h3>Care Connector Testing</h3>
+                <h4>Tasks:</h4>
+                <ol class="tasks">
+                    <li>Find nearest facility</li>
+                    <li>Book appointment</li>
+                    <li>Start virtual consultation</li>
+                    <li>Test offline booking</li>
+                </ol>
+            </div>
+
+            <div class="component">
+                <h3>Community Support Testing</h3>
+                <h4>Tasks:</h4>
+                <ol class="tasks">
+                    <li>Join community group</li>
+                    <li>Share experience</li>
+                    <li>Earn reputation tokens</li>
+                    <li>Access offline support</li>
+                </ol>
+            </div>
+
+            <div class="component">
+                <h3>Health Worker Portal Testing</h3>
+                <h4>Tasks:</h4>
+                <ol class="tasks">
+                    <li>Access patient records</li>
+                    <li>Use decision support</li>
+                    <li>Manage emergencies</li>
+                    <li>Test offline protocols</li>
+                </ol>
+            </div>
+
+            <div class="component">
+                <h3>Analytics Dashboard Testing</h3>
+                <h4>Tasks:</h4>
+                <ol class="tasks">
+                    <li>Generate reports</li>
+                    <li>Track supply chain</li>
+                    <li>Monitor performance</li>
+                    <li>Test offline analytics</li>
+                </ol>
+            </div>
+
+            <div class="technical-section">
+                <h3>Technical Testing Focus</h3>
+                
+                <h4>Blockchain Integration:</h4>
+                <ul>
+                    <li>Smart contract execution</li>
+                    <li>Token distribution</li>
+                    <li>NFT management</li>
+                    <li>Data verification</li>
+                </ul>
+
+                <h4>AI Performance:</h4>
+                <ul>
+                    <li>Llama 3.1 response accuracy</li>
+                    <li>Language processing speed</li>
+                    <li>Recommendation relevance</li>
+                    <li>Offline capability</li>
+                </ul>
+
+                <h4>Technical Requirements:</h4>
+                <ul>
+                    <li>Low-end device performance</li>
+                    <li>Offline functionality</li>
+                    <li>Data security compliance</li>
+                    <li>System integration</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>4. Success Metrics by Component</h2>
+            
+            <div class="metrics">
+                <div class="metric-card">
+                    <h4>Home Screen Success:</h4>
+                    <ul>
+                        <li><span class="success-metric">90%</span> timeline access success</li>
+                        <li><span class="success-metric">&lt;30</span> second emergency response</li>
+                        <li><span class="success-metric">70%</span> tip engagement</li>
+                        <li><span class="success-metric">100%</span> offline availability</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <h4>Health Assessment Success:</h4>
+                    <ul>
+                        <li><span class="success-metric">95%</span> symptom analysis accuracy</li>
+                        <li><span class="success-metric">80%</span> recommendation acceptance</li>
+                        <li><span class="success-metric">&lt;5%</span> false emergency triggers</li>
+                        <li><span class="success-metric">100%</span> offline assessment</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <h4>Education Hub Success:</h4>
+                    <ul>
+                        <li><span class="success-metric">80%</span> module completion</li>
+                        <li><span class="success-metric">90%</span> language accuracy</li>
+                        <li><span class="success-metric">70%</span> quiz participation</li>
+                        <li><span class="success-metric">100%</span> offline access</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <h4>Care Connector Success:</h4>
+                    <ul>
+                        <li><span class="success-metric">95%</span> facility location accuracy</li>
+                        <li><span class="success-metric">80%</span> appointment completion</li>
+                        <li><span class="success-metric">70%</span> virtual consultation use</li>
+                        <li><span class="success-metric">100%</span> offline booking</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <h4>Community Support Success:</h4>
+                    <ul>
+                        <li><span class="success-metric">60%</span> active participation</li>
+                        <li><span class="success-metric">80%</span> support response rate</li>
+                        <li><span class="success-metric">70%</span> token engagement</li>
+                        <li><span class="success-metric">100%</span> offline community</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <h4>Health Worker Portal Success:</h4>
+                    <ul>
+                        <li><span class="success-metric">100%</span> record accessibility</li>
+                        <li><span class="success-metric">90%</span> protocol compliance</li>
+                        <li><span class="success-metric">&lt;2</span> minute emergency response</li>
+                        <li><span class="success-metric">100%</span> offline functionality</li>
+                    </ul>
+                </div>
+
+                <div class="metric-card">
+                    <h4>Analytics Dashboard Success:</h4>
+                    <ul>
+                        <li><span class="success-metric">95%</span> data accuracy</li>
+                        <li><span class="success-metric">100%</span> supply chain tracking</li>
+                        <li><span class="success-metric">90%</span> metric availability</li>
+                        <li><span class="success-metric">100%</span> offline reporting</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

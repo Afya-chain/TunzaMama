@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI Jobs-to-be-Done Framework</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #f3f4f6;
+            --accent-color: #dbeafe;
+            --text-color: #1f2937;
+            --border-radius: 8px;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9fafb;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .section-header:hover {
+            background: #1d4ed8;
+        }
+
+        .section-header h2 {
+            font-size: 1.25rem;
+            margin: 0;
+        }
+
+        .section-content {
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .category-header {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .job-card {
+            background: var(--secondary-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .job-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .job-type {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .job-type::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .job-scenario {
+            background: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin: 0.5rem 0;
+            border: 1px solid #e5e7eb;
+        }
+
+        .job-when, .job-want, .job-so {
+            margin: 0.5rem 0;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .job-when {
+            border-left-color: var(--success-color);
+        }
+
+        .job-want {
+            border-left-color: var(--warning-color);
+        }
+
+        .job-so {
+            border-left-color: var(--danger-color);
+        }
+
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--accent-color);
+            transition: transform 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .metric-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .metric-list {
+            list-style-type: none;
+            padding-left: 1rem;
+        }
+
+        .metric-list li {
+            margin: 0.5rem 0;
+            position: relative;
+        }
+
+        .metric-list li::before {
+            content: "•";
+            color: var(--primary-color);
+            position: absolute;
+            left: -1rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header {
+                padding: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .metrics-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MamaAI Jobs-to-be-Done Framework</h1>
+        </div>
+
+        <!-- Pregnant Women's Jobs -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>1. Pregnant Women's Jobs to be Done</h2>
+                <span>+</span>
+            </div>
+            <div class="section-content">
+                <div class="category-header">Functional Jobs</div>
+                
+                <div class="job-card">
+                    <div class="job-type">Health Management</div>
+                    <div class="job-scenario">
+                        <div class="job-when">When... I discover I'm pregnant</div>
+                        <div class="job-want">I want to... have all my health information in one secure place</div>
+                        <div class="job-so">So I can... ensure continuous quality care throughout my pregnancy</div>
+                    </div>
+                    <div class="job-scenario">
+                        <div class="job-when">When... I visit different healthcare facilities</div>
+                        <div class="job-want">I want to... easily share my complete health history</div>
+                        <div class="job-so">So I can... receive appropriate care without repetitive explanations</div>
+                    </div>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-type">Emergency Situations</div>
+                    <div class="job-scenario">
+                        <div class="job-when">When... I face a pregnancy emergency</div>
+                        <div class="job-want">I want to... instantly alert nearby healthcare providers and family</div>
+                        <div class="job-so">So I can... receive immediate assistance and feel secure</div>
+                    </div>
+                </div>
+
+                <div class="category-header">Emotional Jobs</div>
+                
+                <div class="job-card">
+                    <div class="job-type">Peace of Mind</div>
+                    <div class="job-scenario">
+                        <div class="job-when">When... I worry about my pregnancy</div>
+                        <div class="job-want">I want to... access verified health information</div>
+                        <div class="job-so">So I can... feel confident about my pregnancy decisions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Healthcare Providers' Jobs -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>2. Healthcare Providers' Jobs to be Done</h2>
+                <span>+</span>
+            </div>
+            <div class="section-content">
+                <div class="category-header">Clinical Jobs</div>
+                
+                <div class="job-card">
+                    <div class="job-type">Patient Care</div>
+                    <div class="job-scenario">
+                        <div class="job-when">When... I see a new patient</div>
+                        <div class="job-want">I want to... instantly access their complete health history</div>
+                        <div class="job-so">So I can... provide appropriate, informed care</div>
+                    </div>
+                </div>
+
+                <div class="category-header">Administrative Jobs</div>
+                
+                <div class="job-card">
+                    <div class="job-type">Record Management</div>
+                    <div class="job-scenario">
+                        <div class="job-when">When... I update patient records</div>
+                        <div class="job-want">I want to... securely store and share information</div>
+                        <div class="job-so">So I can... ensure continuity of care across providers</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Health Workers' Jobs -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>3. Community Health Workers' Jobs to be Done</h2>
+                <span>+</span>
+            </div>
+            <div class="section-content">
+                <div class="category-header">Support Jobs</div>
+                
+                <div class="job-card">
+                    <div class="job-type">Community Care</div>
+                    <div class="job-scenario">
+                        <div class="job-when">When... I visit community members</div>
+                        <div class="job-want">I want to... access offline health information</div>
+                        <div class="job-so">So I can... provide accurate guidance without connectivity</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health System Jobs -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>4. Health System Jobs to be Done</h2>
+                <span>+</span>
+            </div>
+            <div class="section-content">
+                <div class="category-header">Management Jobs</div>
+                
+                <div class="job-card">
+                    <div class="job-type">Resource Allocation</div>
+                    <div class="job-scenario">
+                        <div class="job-when">When... planning resource distribution</div>
+                        <div class="job-want">I want to... access real-time utilization data</div>
+                        <div class="job-so">So I can... optimize resource allocation</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blockchain-Specific Jobs -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>5. Blockchain-Specific Jobs to be Done</h2>
+                <span>+</span>
+            </div>
+            <div class="section-content">
+                <div class="job-card">
+                    <div class="job-type">Data Management</div>
+                    <div class="job-scenario">
+                        <div class="job-when">When... storing sensitive health data</div>
+                        <div class="job-want">I want to... ensure immutable, secure record-keeping</div>
+                        <div class="job-so">So I can... maintain data integrity and privacy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI-Powered Jobs -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>6. AI-Powered Jobs to be Done</h2>
+                <span>+</span>
+            </div>
+            <div class="section-content">
+                <div class="job-card">
+                    <div class="job-type">Clinical Support</div>
+                    <div class="job-scenario">
+                        <div class="job-when">When... assessing patient risks</div>
+                        <div class="job-want">I want to... receive AI-powered insights</div>
+                        <div class="job-so">So I can... make data-driven decisions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cross-Cutting Jobs -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>7. Cross-Cutting Jobs to be Done</h2>
+                <span>+</span>
+            </div>
+            <div class="section-content">
+                <div class="job-card">
+                    <div class="job-type">Offline Access</div>
+                    <div class="job-scenario">
+                        <div class="job-when">When... working without internet</div>
+                        <div class="job-want">I want to... access critical features</div>
+                        <div class="job-so">So I can... maintain care continuity</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Metrics -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h2>Success Metrics</h2>
+                <span>+</span>
+            </div>
+            <div class="section-content">
+                <div class="metrics-container">
+                    <div class="metric-card">
+                        <div class="metric-title">Primary Metrics</div>
+                        <ul class="metric-list">
+                            <li>Job Completion Rate</li>
+                            <li>Time to complete each job</li>
+                            <li>Success rate in offline mode</li>
+                            <li>User Satisfaction</li>
+                            <li>Feature utilization rates</li>
+                            <li>User retention metrics</li>
+                            <li>Emergency response times</li>
+                            <li>Care compliance rates</li>
+                            <li>Health complication rates</li>
+                        </ul>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Supporting Metrics</div>
+                        <ul class="metric-list">
+                            <li>System uptime</li>
+                            <li>Response time</li>
+                            <li>Sync success rate</li>
+                            <li>Community engagement levels</li>
+                            <li>Support network growth</li>
+                            <li>Knowledge sharing rates</li>
+                            <li>Resource utilization efficiency</li>
+                            <li>Token system engagement</li>
+                            <li>Healthcare cost savings</li>
+                        </ul>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-title">Technical Performance</div>
+                        <ul class="metric-list">
+                            <li>Database sync frequency</li>
+                            <li>Offline functionality success rate</li>
+                            <li>Data encryption verification</li>
+                            <li>Blockchain transaction speed</li>
+                            <li>AI response accuracy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const span = header.querySelector('span');
+            const allSections = document.querySelectorAll('.section-content');
+            const allSpans = document.querySelectorAll('.section-header span');
+            
+            // Close all other sections
+            allSections.forEach(section => {
+                if (section !== content && section.classList.contains('active')) {
+                    section.classList.remove('active');
+                    section.previousElementSibling.querySelector('span').textContent = '+';
+                }
+            });
+            
+            // Toggle current section
+            content.classList.toggle('active');
+            span.textContent = content.classList.contains('active') ? '-' : '+';
+        }
+
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('.section-header').forEach(header => {
+            header.addEventListener('click', function() {
+                setTimeout(() => {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            });
+        });
+
+        // Open first section by default
+        document.querySelector('.section-content').classList.add('active');
+        document.querySelector('.section-header span').textContent = '-';
+
+        // Add hover effect to job cards
+        document.querySelectorAll('.job-card').forEach(card => {
+            card.addEventListener('mouseover', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+            });
+            
+            card.addEventListener('mouseout', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            });
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const openSections = document.querySelectorAll('.section-content.active');
+                openSections.forEach(section => {
+                    section.classList.remove('active');
+                    section.previousElementSibling.querySelector('span').textContent = '+';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

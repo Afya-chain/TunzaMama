@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI Affinity Diagram</title>
+    <style>
+        :root {
+            --color-primary: #7c3aed;
+            --color-secondary: #4f46e5;
+            --color-accent: #2dd4bf;
+            --color-background: #f8fafc;
+            --color-card: #ffffff;
+            --color-text: #1e293b;
+            --color-text-light: #64748b;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] {
+            --color-primary: #8b5cf6;
+            --color-secondary: #6366f1;
+            --color-accent: #14b8a6;
+            --color-background: #0f172a;
+            --color-card: #1e293b;
+            --color-text: #f1f5f9;
+            --color-text-light: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--color-text);
+            background: var(--color-background);
+            padding: 2rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: none;
+            background: var(--color-primary);
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            color: var(--color-text-light);
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .section {
+            background: var(--color-card);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section:hover::before {
+            opacity: 1;
+        }
+
+        .section h2 {
+            font-size: 1.75rem;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+        }
+
+        .section h3 {
+            color: var(--color-secondary);
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .section h3::after {
+            content: '↓';
+            margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .section h3.active::after {
+            transform: rotate(-180deg);
+        }
+
+        .section ul {
+            list-style: none;
+            padding-left: 1.5rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .section ul.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section li {
+            position: relative;
+            margin-bottom: 0.75rem;
+            color: var(--color-text-light);
+            padding-left: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .section li:hover {
+            transform: translateX(5px);
+            color: var(--color-text);
+        }
+
+        .section li::before {
+            content: "";
+            position: absolute;
+            left: -0.5rem;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--color-accent);
+        }
+
+        .insights {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: white;
+            padding: 3rem;
+            border-radius: 16px;
+            margin-top: 4rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .insights h2 {
+            color: white;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .insight-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .insight-card strong {
+            display: block;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .insight-card ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .insight-card li {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .filter-bar {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 9999px;
+            background: var(--color-card);
+            color: var(--color-text);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .filter-button:hover {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .filter-button.active {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .insights {
+                padding: 1.5rem;
+            }
+
+            .insights-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+    
+    <div class="container">
+        <header>
+            <h1>MamaAI Affinity Diagram</h1>
+            <p class="subtitle">A comprehensive overview of healthcare access, technology usage, and community factors</p>
+        </header>
+
+        <div class="filter-bar">
+            <button class="filter-button active" onclick="filterSections('all')">All</button>
+            <button class="filter-button" onclick="filterSections('healthcare')">Healthcare</button>
+            <button class="filter-button" onclick="filterSections('tech')">Technology</button>
+            <button class="filter-button" onclick="filterSections('community')">Community</button>
+            <button class="filter-button" onclick="filterSections('privacy')">Privacy</button>
+        </div>
+        
+        <div class="grid">
+            <div class="section" data-category="healthcare">
+                <h2>🏥 Healthcare Access Challenges</h2>
+                <h3>Distance & Transportation</h3>
+                <ul>
+                    <li>Long travel to facilities</li>
+                    <li>Emergency transport unavailable</li>
+                    <li>Cost of transportation</li>
+                    <li>Poor road infrastructure</li>
+                    <li>Seasonal accessibility issues</li>
+                </ul>
+                <h3>Cost Barriers</h3>
+                <ul>
+                    <li>Facility fees</li>
+                    <li>Medicine expenses</li>
+                    <li>Laboratory test costs</li>
+                    <li>Emergency savings lacking</li>
+                    <li>Insurance coverage gaps</li>
+                </ul>
+            </div>
+
+            <div class="section" data-category="tech">
+                <h2>📱 Technology Usage Patterns</h2>
+                <h3>Mobile Device Access</h3>
+                <ul>
+                    <li>Basic phone ownership</li>
+                    <li>Smartphone penetration</li>
+                    <li>Battery life concerns</li>
+                    <li>Internet connectivity</li>
+                    <li>Device sharing practices</li>
+                </ul>
+                <h3>Digital Literacy</h3>
+                <ul>
+                    <li>M-PESA familiarity</li>
+                    <li>WhatsApp usage</li>
+                    <li>SMS comfort level</li>
+                    <li>App navigation skills</li>
+                    <li>Tech learning curve</li>
+                </ul>
+            </div>
+
+            <div class="section" data-category="community">
+                <h2>👥 Community & Cultural Factors</h2>
+                <h3>Traditional Practices</h3>
+                <ul>
+                    <li>Birth customs</li>
+                    <li>Herbal medicines</li>
+                    <li>Cultural beliefs</li>
+                    <li>Family influences</li>
+                    <li>Community rituals</li>
+                </ul>
+                <h3>Support Networks</h3>
+                <ul>
+                    <li>Family guidance</li>
+                    <li>Community groups</li>
+                    <li>Women's circles</li>
+                    <li>Elder advice</li>
+                    <li>Peer support</li>
+                </ul>
+            </div>
+
+            <div class="section" data-category="privacy">
+                <h2>🔒 Privacy & Security Concerns</h2>
+                <h3>Data Protection</h3>
+                <ul>
+                    <li>Health information privacy</li>
+                    <li>Family planning privacy</li>
+                    <li>HIV status protection</li>
+                    <li>Domestic situation privacy</li>
+                    <li>Cultural sensitivity</li>
+                </ul>
+                <h3>Access Control</h3>
+                <ul>
+                    <li>Family sharing</li>
+                    <li>Provider access</li>
+                    <li>Emergency access</li>
+                    <li>Community health worker access</li>
+                    <li>Traditional healer integration</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="insights">
+            <h2>Key Implementation Insights</h2>
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <strong>Core Focus Areas</strong>
+                    <ul>
+                        <li>Offline-first functionality</li>
+                        <li>Simple, familiar interfaces</li>
+                        <li>Strong privacy controls</li>
+                        <li>Community integration</li>
+                        <li>Emergency reliability</li>
+                    </ul>
+                </div>
+                <div class="insight-card">
+                    <strong>Priority Features</strong>
+                    <ul>
+                        <li>Emergency response system</li>
+                        <li>Health record management</li>
+                        <li>Education platform</li>
+                        <li>Community support network</li>
+                        <li>Resource coordination</li>
+                    </ul>
+                </div>
+                <div class="insight-card">
+                    <strong>Critical Success Factors</strong>
+                    <ul>
+                        <li>Cultural alignment</li>
+                        <li>Community trust</li>
+                        <li>Technical accessibility</li>
+                        <li>Economic sustainability</li>
+                        <li>Health system integration</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
+        }
+
+        // Section expansion functionality
+        document.querySelectorAll('.section h3').forEach(header => {
+            header.addEventListener('click', () => {
+                const ul = header.nextElementSibling;
+                header.classList.toggle('active');
+                ul.classList.toggle('show');
+            });
+        });
+
+        // Category filtering functionality
+        function filterSections(category) {
+            const sections = document.querySelectorAll('.section');
+            const buttons = document.querySelectorAll('.filter-button');
+
+            buttons.forEach(button => {
+                button.classList.remove('active');
+                if (button.textContent.toLowerCase().includes(category)) {
+                    button.classList.add('active');
+                }
+            });
+
+            sections.forEach(section => {
+                if (category === 'all' || section.dataset.category === category) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize sections as expanded
+        document.querySelectorAll('.section ul').forEach(ul => {
+            ul.classList.add('show');
+        });
+    </script>
+</body>
+</html>
