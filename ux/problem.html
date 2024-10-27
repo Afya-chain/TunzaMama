@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI Problem Statement Framework</title>
+    <style>
+        :root {
+            --primary: #0891b2;
+            --primary-dark: #0e7490;
+            --secondary: #334155;
+            --accent: #e11d48;
+            --accent-light: #fecdd3;
+            --background: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --success: #059669;
+            --warning: #d97706;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background: var(--background);
+            color: var(--secondary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .navigation {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 1rem;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .nav-list button {
+            background: none;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            color: var(--secondary);
+            border-radius: 0.25rem;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .nav-list button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .problem-statement {
+            background: var(--accent);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .problem-statement:hover {
+            transform: translateY(-2px);
+        }
+
+        .section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            width: 0;
+            transition: width 1s ease;
+        }
+
+        .hmw {
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1rem 0;
+            background: #f1f5f9;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .hmw:hover {
+            transform: translateX(10px);
+            background: #e2e8f0;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .metric-card:hover {
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transform: translateY(-2px);
+        }
+
+        .metric-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .metric-value {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: var(--accent-light);
+            color: var(--accent);
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .sub-questions {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .sub-questions li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .sub-questions li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .sub-questions li:hover {
+            transform: translateX(10px);
+        }
+
+        .sub-questions li:hover:before {
+            color: var(--primary);
+        }
+
+        .implementation {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .priority-list {
+            list-style: none;
+        }
+
+        .priority-list li {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .priority-critical {
+            background: #fee2e2;
+            border-left: 3px solid var(--accent);
+        }
+
+        .priority-high {
+            background: #fef3c7;
+            border-left: 3px solid var(--warning);
+        }
+
+        .priority-medium {
+            background: #ecfccb;
+            border-left: 3px solid var(--success);
+        }
+
+        .collapsible {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collapsible:after {
+            content: '+';
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .active:after {
+            content: '-';
+        }
+
+        .content {
+            padding: 0 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .tech-item {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-list {
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MamaAI Problem Statement Framework</h1>
+            <p>A comprehensive approach to improving maternal healthcare in Kenya</p>
+        </header>
+
+        <nav class="navigation">
+            <ul class="nav-list">
+                <li><button onclick="scrollToSection('healthcare')">Healthcare Access</button></li>
+                <li><button onclick="scrollToSection('technology')">Technology</button></li>
+                <li><button onclick="scrollToSection('community')">Community</button></li>
+                <li><button onclick="scrollToSection('outcomes')">Health Outcomes</button></li>
+                <li><button onclick="scrollToSection('sustainability')">Sustainability</button></li>
+            </ul>
+        </nav>
+
+        <div class="problem-statement">
+            <h2>Core Problem Statement</h2>
+            <p>In Kenya, maternal mortality rates have increased by 55% between 2017 and 2020, with a current rate of 530 deaths per 100,000 live births. Despite 89% availability of antenatal care services, only 62% of births are attended by skilled personnel, indicating significant gaps in care continuity, emergency response, and healthcare access.</p>
+        </div>
+
+        <div id="healthcare" class="section">
+            <div class="section-header">
+                <h2>1. Healthcare Access</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 40%"></div>
+                </div>
+            </div>
+            
+            <div class="hmw">
+                <h3>How might we improve access to quality maternal healthcare for women in rural Kenya while respecting traditional practices and overcoming infrastructure limitations?</h3>
+            </div>
+            
+            <ul class="sub-questions">
+                <li>How might we reduce the impact of distance on healthcare access?</li>
+                <li>How might we make emergency transport more readily available?</li>
+                <li>How might we improve care continuity between facilities?</li>
+            </ul>
+
+            <div class="metrics">
+                <div class="metric-card">
+                    <h4>Healthcare Accessibility <span class="metric-value">+40%</span></h4>
+                    <p>Target: Increase facility-based deliveries by 40% in 12 months</p>
+                    <ul>
+                        <li>% of pregnancies registered</li>
+                        <li>% attending 4+ antenatal visits</li>
+                        <li>Average distance to facility</li>
+                    </ul>
+                </div>
+                <div class="metric-card">
+                    <h4>Care Continuity <span class="metric-value">90%</span></h4>
+                    <p>Target: 90% care continuity across providers</p>
+                    <ul>
+                        <li>Complete health records rate</li>
+                        <li>Provider coordination rate</li>
+                        <li>Follow-up completion rate</li>
+                    </ul>
+                </div>
+                <div class="metric-card">
+                    <h4>Emergency Response <span class="metric-value">-60%</span></h4>
+                    <p>Target: Reduce response time by 60%</p>
+                    <ul>
+                        <li>Average response time</li>
+                        <li>Transport coordination rate</li>
+                        <li>Case survival rate</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="technology" class="section">
+            <div class="section-header">
+                <h2>2. Technology Integration</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 60%"></div>
+                </div>
+            </div>
+
+            <div class="hmw">
+                <h3>How might we leverage blockchain and AI technology to improve maternal healthcare while ensuring accessibility for users with limited technical literacy?</h3>
+            </div>
+
+            <div class="tech-stack">
+                <div class="tech-item">Blockchain</div>
+                <div class="tech-item">AI/ML</div>
+                <div class="tech-item">Mobile App</div>
+                <div class="tech-item">Offline Mode</div>
+            </div>
+
+            <div class="metrics">
+                <div class="metric-card">
+                    <h4>Technology Adoption <span class="metric-value">80%</span></h4>
+                    <p>Target: Achieve 80% active user rate within 6 months</p>
+                    <ul>
+                        <li>Daily active users</li>
+                        <li>Feature usage rates</li>
+                        <li>Task completion success</li>
+                    </ul>
+                </div>
+                <div class="metric-card">
+                    <h4>Offline Performance <span class="metric-value">100%</span></h4>
+                    <p>Target: 100% critical feature availability offline</p>
+                    <ul>
+                        <li>Offline functionality uptime</li>
+                        <li>Sync success rate</li>
+                        <li>Emergency feature availability</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="community" class="section">
+            <div class="section-header">
+                <h2>3. Community Engagement</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%"></div>
+                </div>
+            </div>
+
+            <div class="hmw">
+                <h3>How might we integrate traditional practices and community support systems into a digital healthcare solution?</h3>
+            </div>
+
+            <div class="metrics">
+                <div class="metric-card">
+                    <h4>Community Participation <span class="metric-value">70%</span></h4>
+                    <p>Target: 70% community engagement rate</p>
+                    <ul>
+                        <li>Active community groups</li>
+                        <li>Peer support interactions</li>
+                        <li>Community leader engagement</li>
+                    </ul>
+                </div>
+                <div class="metric-card">
+                    <h4>Traditional Integration <span class="metric-value">85%</span></h4>
+                    <p>Target: 85% traditional practice integration</p>
+                    <ul>
+                        <li>Traditional provider participation</li>
+                        <li>Cultural practice documentation</li>
+                        <li>Community satisfaction rate</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Implementation Framework</h2>
+            <div class="implementation">
+                <div>
+                    <h3>Priority Matrix</h3>
+                    <ul class="priority-list">
+                        <li class="priority-critical">Critical (0-3 months):
+                            <ul>
+                                <li>Emergency response system</li>
+                                <li>Basic health records</li>
+                                <li>Offline functionality</li>
+                                <li>Community engagement</li>
+                            </ul>
+                        </li>
+                        <li class="priority-high">High (3-6 months):
+                            <ul>
+                                <li>Risk assessment</li>
+                                <li>Education platform</li>
+                                <li>Provider integration</li>
+                                <li>Token system</li>
+                            </ul>
+                        </li>
+                        <li class="priority-medium">Medium (6-12 months):
+                            <ul>
+                                <li>Advanced analytics</li>
+                                <li>AI enhancement</li>
+                                <li>Supply chain</li>
+                                <li>Impact measurement</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Success Thresholds</h3>
+                    <div class="metric-card">
+                        <h4>Minimum Viable Product</h4>
+                        <ul>
+                            <li>50% of critical KPIs met</li>
+                            <li>30% user adoption</li>
+                            <li>80% emergency feature reliability</li>
+                        </ul>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Full Implementation</h4>
+                        <ul>
+                            <li>80% of all KPIs met</li>
+                            <li>70% user adoption</li>
+                            <li>95% feature reliability</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="outcomes" class="section">
+            <div class="section-header">
+                <h2>4. Health Outcomes</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 45%"></div>
+                </div>
+            </div>
+
+            <div class="hmw">
+                <h3>How might we improve maternal health outcomes through early risk detection and intervention?</h3>
+            </div>
+
+            <div class="metrics">
+                <div class="metric-card">
+                    <h4>Risk Management <span class="metric-value">90%</span></h4>
+                    <p>Target: 90% early risk detection rate</p>
+                    <ul>
+                        <li>Risk assessment completion rate</li>
+                        <li>Early intervention rate</li>
+                        <li>Complication prevention rate</li>
+                    </ul>
+                </div>
+                <div class="metric-card">
+                    <h4>Health Education <span class="metric-value">85%</span></h4>
+                    <p>Target: 85% health literacy improvement</p>
+                    <ul>
+                        <li>Education module completion</li>
+                        <li>Knowledge assessment scores</li>
+                        <li>Behavior change metrics</li>
+                    </ul>
+                </div>
+                <div class="metric-card">
+                    <h4>Clinical Outcomes <span class="metric-value">-50%</span></h4>
+                    <p>Target: 50% reduction in preventable complications</p>
+                    <ul>
+                        <li>Maternal mortality rate</li>
+                        <li>Complication rate</li>
+                        <li>Emergency case outcomes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="sustainability" class="section">
+            <div class="section-header">
+                <h2>5. Sustainability</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 30%"></div>
+                </div>
+            </div>
+
+            <div class="hmw">
+                <h3>How might we create a sustainable, scalable solution that continues to serve communities effectively?</h3>
+            </div>
+
+            <div class="metrics">
+                <div class="metric-card">
+                    <h4>Financial Sustainability <span class="metric-value">24m</span></h4>
+                    <p>Target: Achieve operational sustainability in 24 months</p>
+                    <ul>
+                        <li>Resource utilization efficiency</li>
+                        <li>Cost per user served</li>
+                        <li>Revenue generation metrics</li>
+                    </ul>
+                </div>
+                <div class="metric-card">
+                    <h4>Technical Sustainability <span class="metric-value">99.9%</span></h4>
+                    <p>Target: 99.9% system reliability</p>
+                    <ul>
+                        <li>System uptime</li>
+                        <li>Update adoption rate</li>
+                        <li>Technical debt metrics</li>
+                    </ul>
+                </div>
+                <div class="metric-card">
+                    <h4>Impact Scaling <span class="metric-value">2x</span></h4>
+                    <p>Target: Double impact while maintaining quality</p>
+                    <ul>
+                        <li>User growth rate</li>
+                        <li>Quality consistency metrics</li>
+                        <li>Geographic expansion</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling to sections
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Intersection Observer for animations
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Interactive metric cards
+        const metricCards = document.querySelectorAll('.metric-card');
+        metricCards.forEach(card => {
+            card.addEventListener('click', () => {
+                card.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    card.style.transform = 'translateY(-2px)';
+                }, 200);
+            });
+        });
+
+        // Progress bar animation
+        const progressBars = document.querySelectorAll('.progress-fill');
+        progressBars.forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0';
+            setTimeout(() => {
+                bar.style.width = width;
+            }, 500);
+        });
+    </script>
+</body>
+</html>

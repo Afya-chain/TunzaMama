@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI Ideation Framework</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --background: #f5f6fa;
+            --text: #2c3e50;
+            --card-bg: #ffffff;
+            --success: #2ecc71;
+            --warning: #f1c40f;
+            --info: #9b59b6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--background);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .framework-section {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .framework-section h2 {
+            color: var(--secondary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .framework-section h3 {
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.4rem;
+        }
+
+        .framework-section h4 {
+            color: var(--info);
+            margin: 1rem 0;
+            font-size: 1.2rem;
+        }
+
+        .solution-card {
+            background: #f8f9fa;
+            border-left: 4px solid var(--secondary);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .solution-list {
+            list-style: none;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .solution-list li {
+            position: relative;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .solution-list li::before {
+            content: "•";
+            color: var(--secondary);
+            position: absolute;
+            left: 0;
+        }
+
+        .scamper-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .scamper-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .scamper-card h4 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .perspective-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .perspective-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .matrix-table th,
+        .matrix-table td {
+            padding: 1rem;
+            border: 1px solid #e1e1e1;
+            text-align: left;
+        }
+
+        .matrix-table th {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .matrix-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .priority-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .priority-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .priority-label {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .priority-critical {
+            background: var(--accent);
+        }
+
+        .priority-high {
+            background: var(--warning);
+        }
+
+        .priority-medium {
+            background: var(--info);
+        }
+
+        .priority-low {
+            background: var(--success);
+        }
+
+        .roadmap {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .phase-card {
+            flex: 1;
+            min-width: 300px;
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .phase-card h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+        }
+
+        .phase-list {
+            list-style: none;
+        }
+
+        .phase-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .phase-list li:last-child {
+            border-bottom: none;
+        }
+
+        .scenario-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .framework-section {
+                padding: 1rem;
+            }
+
+            .scamper-grid,
+            .perspective-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .phase-card {
+                min-width: 100%;
+            }
+
+            .matrix-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MamaAI Ideation Framework</h1>
+            <p>Innovative solutions for maternal healthcare</p>
+        </header>
+
+        <!-- 1. Reverse Thinking Solutions -->
+        <section class="framework-section">
+            <h2>1. Reverse Thinking Solutions</h2>
+            <p>Starting with what could make the problem worse to find solutions</p>
+
+            <div class="solution-card">
+                <h3>Emergency Response</h3>
+                <h4>Worst Case:</h4>
+                <ul class="solution-list">
+                    <li>No way to contact help</li>
+                    <li>Unknown location</li>
+                    <li>No transport available</li>
+                    <li>No medical history access</li>
+                </ul>
+
+                <h4>Solutions Generated:</h4>
+                <div class="solution-card">
+                    <h4>1. "Always-On Guardian"</h4>
+                    <ul class="solution-list">
+                        <li>Offline emergency beacon</li>
+                        <li>Pre-mapped safe routes</li>
+                        <li>Cached medical data</li>
+                        <li>Community alert network</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h4>2. "Transport Web"</h4>
+                    <ul class="solution-list">
+                        <li>Pre-registered transport network</li>
+                        <li>Community vehicle sharing</li>
+                        <li>Smart resource allocation</li>
+                        <li>Token-based incentives</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Analogous Inspiration -->
+        <section class="framework-section">
+            <h2>2. Analogous Inspiration</h2>
+            <p>Solutions inspired by similar systems in different contexts</p>
+
+            <div class="solution-card">
+                <h3>From M-PESA (Mobile Money)</h3>
+                <h4>1. "Health Wallet"</h4>
+                <ul class="solution-list">
+                    <li>Store health records like currency</li>
+                    <li>Transfer permissions like payments</li>
+                    <li>Emergency credit system</li>
+                    <li>Community pooling</li>
+                </ul>
+            </div>
+
+            <div class="solution-card">
+                <h3>From Traditional Beading</h3>
+                <h4>2. "Digital Beads"</h4>
+                <ul class="solution-list">
+                    <li>Progress visualization</li>
+                    <li>Achievement tracking</li>
+                    <li>Community celebration</li>
+                    <li>Cultural integration</li>
+                </ul>
+            </div>
+
+            <div class="solution-card">
+                <h3>From Social Networks</h3>
+                <h4>3. "MamaNetwork"</h4>
+                <ul class="solution-list">
+                    <li>Verified provider profiles</li>
+                    <li>Community ratings</li>
+                    <li>Resource sharing</li>
+                    <li>Knowledge exchange</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 3. SCAMPER Technique -->
+        <section class="framework-section">
+            <h2>3. SCAMPER Technique</h2>
+            <p>(Substitute, Combine, Adapt, Modify, Put to another use, Eliminate, Reverse)</p>
+
+            <div class="scamper-grid">
+                <div class="scamper-card">
+                    <h4>Substitute</h4>
+                    <ul class="solution-list">
+                        <li>Replace paper records with NFTs</li>
+                        <li>Switch facility visits with virtual consultations</li>
+                        <li>Transform physical tokens to digital rewards</li>
+                    </ul>
+                </div>
+
+                <div class="scamper-card">
+                    <h4>Combine</h4>
+                    <ul class="solution-list">
+                        <li>Merge traditional and modern medicine tracking</li>
+                        <li>Unite community transport with emergency response</li>
+                        <li>Blend AI diagnostics with human expertise</li>
+                    </ul>
+                </div>
+
+                <div class="scamper-card">
+                    <h4>Adapt</h4>
+                    <ul class="solution-list">
+                        <li>Modify urban solutions for rural contexts</li>
+                        <li>Adjust blockchain for offline use</li>
+                        <li>Transform social features for health support</li>
+                    </ul>
+                </div>
+
+                <div class="scamper-card">
+                    <h4>Modify</h4>
+                    <ul class="solution-list">
+                        <li>Enhance emergency response with AI</li>
+                        <li>Amplify community involvement with tokens</li>
+                        <li>Magnify impact through data analytics</li>
+                    </ul>
+                </div>
+
+                <div class="scamper-card">
+                    <h4>Put to another use</h4>
+                    <ul class="solution-list">
+                        <li>Repurpose social networks for health support</li>
+                        <li>Convert gaming mechanics for health tracking</li>
+                        <li>Transform educational content into community resources</li>
+                    </ul>
+                </div>
+
+                <div class="scamper-card">
+                    <h4>Eliminate</h4>
+                    <ul class="solution-list">
+                        <li>Remove connectivity dependencies</li>
+                        <li>Reduce technical complexity</li>
+                        <li>Minimize data entry burden</li>
+                    </ul>
+                </div>
+
+                <div class="scamper-card">
+                    <h4>Reverse/Rearrange</h4>
+                    <ul class="solution-list">
+                        <li>Flip provider-patient dynamic</li>
+                        <li>Invert data flow</li>
+                        <li>Reorganize care pathways</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. User-Centered Innovation -->
+        <section class="framework-section">
+            <h2>4. User-Centered Innovation</h2>
+
+            <div class="perspective-grid">
+                <div class="perspective-card">
+                    <h3>Rural Mother Perspective</h3>
+                    <div class="solution-card">
+                        <h4>1. "Voice First"</h4>
+                        <ul class="solution-list">
+                            <li>Voice commands</li>
+                            <li>Audio education</li>
+                            <li>Spoken records</li>
+                            <li>Natural interaction</li>
+                        </ul>
+                    </div>
+                    <div class="solution-card">
+                        <h4>2. "Community Plus"</h4>
+                        <ul class="solution-list">
+                            <li>Local support groups</li>
+                            <li>Resource sharing</li>
+                            <li>Knowledge exchange</li>
+                            <li>Cultural integration</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="perspective-card">
+                    <h3>Healthcare Provider View</h3>
+                    <div class="solution-card">
+                        <h4>1. "Smart Assistant"</h4>
+                        <ul class="solution-list">
+                            <li>AI-powered triage</li>
+                            <li>Decision support</li>
+                            <li>Resource optimization</li>
+                            <li>Patient tracking</li>
+                        </ul>
+                    </div>
+                    <div class="solution-card">
+                        <h4>2. "Connected Care"</h4>
+                        <ul class="solution-list">
+                            <li>Inter-facility coordination</li>
+                            <li>Resource sharing</li>
+                            <li>Emergency management</li>
+                            <li>Supply tracking</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="perspective-card">
+                    <h3>Community Health Worker Angle</h3>
+                    <div class="solution-card">
+                        <h4>1. "Field Companion"</h4>
+                        <ul class="solution-list">
+                            <li>Offline tools</li>
+                            <li>Quick assessment</li>
+                            <li>Resource directory</li>
+                            <li>Emergency protocols</li>
+                        </ul>
+                    </div>
+                    <div class="solution-card">
+                        <h4>2. "Bridge Builder"</h4>
+                        <ul class="solution-list">
+                            <li>Cultural translation</li>
+                            <li>Community connection</li>
+                            <li>Resource coordination</li>
+                            <li>Knowledge sharing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Future Scenarios -->
+        <section class="framework-section">
+            <h2>5. Future Scenarios</h2>
+
+            <div class="scenario-card">
+                <h3>Best Case Scenario</h3>
+                <h4>1. "Complete Integration"</h4>
+                <ul class="solution-list">
+                    <li>Seamless care coordination</li>
+                    <li>Perfect emergency response</li>
+                    <li>Full community engagement</li>
+                    <li>Optimal resource use</li>
+                </ul>
+            </div>
+
+            <div class="scenario-card">
+                <h3>Resource-Constrained Scenario</h3>
+                <h4>1. "Essential Impact"</h4>
+                <ul class="solution-list">
+                    <li>Core emergency features</li>
+                    <li>Basic health tracking</li>
+                    <li>Simple community tools</li>
+                    <li>Minimal viable product</li>
+                </ul>
+            </div>
+
+            <div class="scenario-card">
+                <h3>Technology-Enhanced Scenario</h3>
+                <h4>1. "AI Amplified"</h4>
+                <ul class="solution-list">
+                    <li>Predictive analytics</li>
+                    <li>Automated assistance</li>
+                    <li>Smart contracts</li>
+                    <li>IoT integration</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 6. Prioritized Solutions Matrix -->
+        <section class="framework-section">
+            <h2>6. Prioritized Solutions Matrix</h2>
+
+            <div class="priority-section">
+                <div class="priority-header">
+                    <h3>Immediate Impact (0-3 months)</h3>
+                </div>
+                <div class="solution-card">
+                    <h4>1. Emergency Response System</h4>
+                    <div class="priority-label priority-critical">Priority: Critical</div>
+                    <p>Complexity: Medium</p>
+                    <p>Impact: High</p>
+                    <h4>Requirements:</h4>
+                    <ul class="solution-list">
+                        <li>Offline capability</li>
+                        <li>Location services</li>
+                        <li>Transport network</li>
+                        <li>Alert system</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h4>2. Basic Health Records</h4>
+                    <div class="priority-label priority-critical">Priority: Critical</div>
+                    <p>Complexity: Medium</p>
+                    <p>Impact: High</p>
+                    <h4>Requirements:</h4>
+                    <ul class="solution-list">
+                        <li>Offline storage</li>
+                        <li>Simple interface</li>
+                        <li>Emergency access</li>
+                        <li>Basic sharing</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h4>3. Community Connection</h4>
+                    <div class="priority-label priority-high">Priority: High</div>
+                    <p>Complexity: Low</p>
+                    <p>Impact: High</p>
+                    <h4>Requirements:</h4>
+                    <ul class="solution-list">
+                        <li>Group formation</li>
+                        <li>Resource sharing</li>
+                        <li>Knowledge exchange</li>
+                        <li>Support network</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="priority-section">
+                <div class="priority-header">
+                    <h3>Medium Term (3-6 months)</h3>
+                </div>
+                <div class="solution-card">
+                    <h4>1. AI Health Assistant</h4>
+                    <div class="priority-label priority-high">Priority: High</div>
+                    <p>Complexity: High</p>
+                    <p>Impact: Medium</p>
+                    <h4>Requirements:</h4>
+                    <ul class="solution-list">
+                        <li>Risk assessment</li>
+                        <li>Decision support</li>
+                        <li>Language processing</li>
+                        <li>Learning system</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h4>2. Token Economics</h4>
+                    <div class="priority-label priority-medium">Priority: Medium</div>
+                    <p>Complexity: High</p>
+                    <p>Impact: Medium</p>
+                    <h4>Requirements:</h4>
+                    <ul class="solution-list">
+                        <li>Reward system</li>
+                        <li>Value exchange</li>
+                        <li>Community pool</li>
+                        <li>Incentive structure</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="priority-section">
+                <div class="priority-header">
+                    <h3>Long Term (6-12 months)</h3>
+                </div>
+                <div class="solution-card">
+                    <h4>1. Advanced Analytics</h4>
+                    <div class="priority-label priority-medium">Priority: Medium</div>
+                    <p>Complexity: High</p>
+                    <p>Impact: High</p>
+                    <h4>Requirements:</h4>
+                    <ul class="solution-list">
+                        <li>Data analysis</li>
+                        <li>Pattern recognition</li>
+                        <li>Impact measurement</li>
+                        <li>System optimization</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h4>2. Complete Integration</h4>
+                    <div class="priority-label priority-low">Priority: Low</div>
+                    <p>Complexity: High</p>
+                    <p>Impact: High</p>
+                    <h4>Requirements:</h4>
+                    <ul class="solution-list">
+                        <li>System connections</li>
+                        <li>Full automation</li>
+                        <li>Smart contracts</li>
+                        <li>IoT integration</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Innovation Roadmap -->
+        <section class="framework-section">
+            <h2>7. Innovation Roadmap</h2>
+            <div class="roadmap">
+                <div class="phase-card">
+                    <h3>Phase 1: Foundation</h3>
+                    <ul class="phase-list">
+                        <li>Emergency response system</li>
+                        <li>Basic health records</li>
+                        <li>Community connection</li>
+                        <li>Offline functionality</li>
+                    </ul>
+                </div>
+
+                <div class="phase-card">
+                    <h3>Phase 2: Enhancement</h3>
+                    <ul class="phase-list">
+                        <li>AI integration</li>
+                        <li>Token economics</li>
+                        <li>Provider network</li>
+                        <li>Education platform</li>
+                    </ul>
+                </div>
+
+                <div class="phase-card">
+                    <h3>Phase 3: Optimization</h3>
+                    <ul class="phase-list">
+                        <li>Advanced analytics</li>
+                        <li>Complete integration</li>
+                        <li>System automation</li>
+                        <li>Impact scaling</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
