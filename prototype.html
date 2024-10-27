@@ -8,16 +8,15 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, SF Pro Display, SF Pro Text, sans-serif;
         }
 
-        body {
-            padding: 24px;
-            background: #F3F4F6;
+        .screen-container {
             display: grid;
             grid-template-columns: repeat(3, 393px);
             gap: 24px;
-            justify-content: center;
+            padding: 24px;
+            background: #F5F5F7;
         }
 
         .screen {
@@ -43,377 +42,238 @@
         }
 
         .status-bar {
-            height: 60px;
+            height: 44px;
             padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 14px;
+            color: #000;
         }
 
-        .content {
-            padding: 20px;
-            height: calc(100% - 60px);
-            overflow-y: auto;
-        }
-
-        .header {
-            padding: 20px;
+        .nav-bar {
+            height: 60px;
             background: #fff;
-            border-bottom: 1px solid #E5E7EB;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
         }
 
-        .title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 8px;
+        .nav-menu {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 16px;
+            padding: 16px;
+            overflow-x: auto;
+            background: #fff;
         }
 
-        .subtitle {
+        .nav-item {
             font-size: 16px;
             color: #6B7280;
+            white-space: nowrap;
+        }
+
+        .nav-item.active {
+            color: #007AFF;
+            font-weight: 600;
+        }
+
+        .emergency-button {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 64px;
+            height: 64px;
+            background: #FF3B30;
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
         }
 
         .card {
             background: #fff;
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .nav-tabs {
-            display: flex;
-            background: #F3F4F6;
-            padding: 4px;
-            border-radius: 12px;
             margin: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
-        .nav-tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            font-size: 14px;
-            color: #6B7280;
-            border-radius: 8px;
+        .timeline {
+            padding: 20px;
+            position: relative;
         }
 
-        .nav-tab.active {
-            background: #2563EB;
-            color: #fff;
+        .timeline-bar {
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #E5E7EB;
         }
 
-        .grid {
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            background: #007AFF;
+            border-radius: 50%;
+            margin-top: 6px;
+        }
+
+        .quick-actions {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
             padding: 16px;
         }
 
-        .metric {
-            display: flex;
-            align-items: center;
+        .action-button {
             padding: 16px;
-            border-bottom: 1px solid #E5E7EB;
-        }
-
-        .chart {
-            width: 100%;
-            height: 200px;
             background: #F3F4F6;
-            border-radius: 12px;
-            margin: 16px 0;
-        }
-
-        .button {
-            background: #2563EB;
-            color: #fff;
-            padding: 16px;
-            border-radius: 12px;
+            border-radius: 16px;
             text-align: center;
             font-weight: 600;
-            margin-top: 16px;
         }
 
-        .emergency {
-            position: absolute;
-            bottom: 24px;
-            right: 24px;
-            width: 64px;
-            height: 64px;
-            background: #EF4444;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .offline-indicator {
+            background: #FF9500;
             color: #fff;
-            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .token-balance {
+            background: #34C759;
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
         }
     </style>
 </head>
 <body>
-    <!-- Screen 1: Home -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>MamaHealth</span>
-        </div>
-        <div class="header">
-            <div class="title">Welcome, Sarah</div>
-            <div class="subtitle">Week 24 of pregnancy</div>
-        </div>
-        <div class="grid">
-            <div class="card">
-                <div class="title">Next Visit</div>
-                <div>Gynecologist</div>
-                <div>Tomorrow 10:00 AM</div>
+    <div class="screen-container">
+        <!-- Home Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <div class="offline-indicator">Offline Mode</div>
+                <div class="token-balance">2500 Tokens</div>
             </div>
-            <div class="card">
-                <div class="title">Tests Due</div>
-                <div>Hemoglobin</div>
-                <div>Blood Sugar</div>
+            <div class="nav-bar">
+                <h1 style="font-size: 24px; font-weight: 700;">MamaAI</h1>
+                <div style="display: flex; gap: 16px;">
+                    <span>🔍</span>
+                    <span>🔔</span>
+                </div>
             </div>
-        </div>
-        <div class="emergency">SOS</div>
-    </div>
 
-    <!-- Screen 2: ANC Visits -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>ANC Visits</span>
-        </div>
-        <div class="content">
+            <div class="nav-menu">
+                <div class="nav-item active">Home</div>
+                <div class="nav-item">Records</div>
+                <div class="nav-item">Community</div>
+                <div class="nav-item">Education</div>
+                <div class="nav-item">Resources</div>
+            </div>
+
             <div class="card">
-                <div class="title">Visit Schedule</div>
-                <div class="metric">
-                    <div>Visit 1: Gynecologist</div>
-                    <div>Completed</div>
+                <h2 style="font-size: 20px; margin-bottom: 12px;">Pregnancy Timeline</h2>
+                <div style="height: 8px; background: #E5E7EB; border-radius: 4px; margin-bottom: 8px;">
+                    <div style="width: 60%; height: 100%; background: #007AFF; border-radius: 4px;"></div>
                 </div>
-                <div class="metric">
-                    <div>Visit 2: Nurse-Midwife</div>
-                    <div>Tomorrow</div>
+                <div style="display: flex; justify-content: space-between; color: #6B7280; font-size: 14px;">
+                    <span>Week 1</span>
+                    <span>Week 24</span>
+                    <span>Week 40</span>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <div class="card">
+                    <h3>Next Visit</h3>
+                    <p>Gynecologist</p>
+                    <p>Tomorrow 10:00 AM</p>
+                </div>
+                <div class="card">
+                    <h3>Health Stats</h3>
+                    <p>BP: 120/80</p>
+                    <p>Weight: 65kg</p>
+                </div>
+            </div>
+
+            <div class="emergency-button">SOS</div>
+        </div>
+
+        <!-- Health Records Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <div class="offline-indicator">Offline Mode</div>
+                <div class="token-balance">2500 Tokens</div>
+            </div>
+            
+            <div class="nav-bar">
+                <h1 style="font-size: 24px; font-weight: 700;">Health Records</h1>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-bar"></div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div>
+                        <h3>Gynecologist Visit</h3>
+                        <p>Last week</p>
+                        <p>Normal checkup, all parameters good</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div>
+                        <h3>Blood Tests</h3>
+                        <p>2 weeks ago</p>
+                        <p>Hemoglobin: 12.5g/dL</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Screen 3: Lab Tests -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>Lab Tests</span>
-        </div>
-        <div class="content">
-            <div class="card">
-                <div class="title">Test Results</div>
-                <div class="metric">
-                    <div>Hemoglobin</div>
-                    <div>12.5 g/dL</div>
-                </div>
-                <div class="metric">
-                    <div>Blood Sugar</div>
-                    <div>95 mg/dL</div>
+        <!-- Emergency Screen -->
+        <div class="screen" style="background: #FF3B30;">
+            <div class="dynamic-island"></div>
+            <div class="status-bar" style="color: #fff;">
+                <div style="background: #fff; color: #FF3B30; padding: 4px 12px; border-radius: 12px;">
+                    Emergency Mode
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Screen 4: Ultrasound Tracking -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>Ultrasound</span>
-        </div>
-        <div class="content">
-            <div class="card">
-                <div class="title">Ultrasound Schedule</div>
-                <div class="metric">
-                    <div>1st Scan (18-20 weeks)</div>
-                    <div>Completed</div>
+            
+            <div style="padding: 24px; color: #fff; text-align: center;">
+                <h1 style="font-size: 32px; margin-bottom: 24px;">Emergency Mode Active</h1>
+                <div style="background: rgba(255,255,255,0.2); border-radius: 20px; padding: 24px; margin-bottom: 24px;">
+                    <p>Location Services Active</p>
+                    <p>Nearest Facility: St. Mary's Hospital</p>
+                    <p>ETA: 10 minutes</p>
                 </div>
-                <div class="metric">
-                    <div>2nd Scan (32 weeks)</div>
-                    <div>Scheduled</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 5: Medications -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>Medications</span>
-        </div>
-        <div class="content">
-            <div class="card">
-                <div class="title">Daily Supplements</div>
-                <div class="metric">
-                    <div>Iron</div>
-                    <div>60mg daily</div>
-                </div>
-                <div class="metric">
-                    <div>Folic Acid</div>
-                    <div>400μg daily</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 6: Health Records -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>Health Records</span>
-        </div>
-        <div class="content">
-            <div class="card">
-                <div class="title">Medical History</div>
-                <div class="metric">
-                    <div>Blood Group</div>
-                    <div>A+</div>
-                </div>
-                <div class="metric">
-                    <div>HIV Status</div>
-                    <div>Negative</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 7: Birth Plan -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>Birth Plan</span>
-        </div>
-        <div class="content">
-            <div class="card">
-                <div class="title">Delivery Preferences</div>
-                <div class="metric">
-                    <div>Facility</div>
-                    <div>St. Mary's</div>
-                </div>
-                <div class="metric">
-                    <div>Birth Partner</div>
-                    <div>Spouse</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 8: Baby Health -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>Baby Health</span>
-        </div>
-        <div class="content">
-            <div class="card">
-                <div class="title">Growth Tracking</div>
-                <div class="chart"></div>
-                <div class="metric">
-                    <div>Current Weight</div>
-                    <div>600g</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 9: Nutrition -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>Nutrition</span>
-        </div>
-        <div class="content">
-            <div class="card">
-                <div class="title">Diet Plan</div>
-                <div class="metric">
-                    <div>Daily Calories</div>
-                    <div>2400 kcal</div>
-                </div>
-                <div class="metric">
-                    <div>Protein Intake</div>
-                    <div>75g</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 10: Education -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>Education</span>
-        </div>
-        <div class="content">
-            <div class="card">
-                <div class="title">Resources</div>
-                <div class="metric">
-                    <div>Pregnancy Guide</div>
-                    <div>View</div>
-                </div>
-                <div class="metric">
-                    <div>Birth Preparation</div>
-                    <div>View</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 11: Emergency -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>Emergency</span>
-        </div>
-        <div class="content">
-            <div class="card">
-                <div class="title">Emergency Contacts</div>
-                <div class="metric">
-                    <div>Doctor</div>
-                    <div>Call</div>
-                </div>
-                <div class="metric">
-                    <div>Hospital</div>
-                    <div>Directions</div>
-                </div>
-            </div>
-            <div class="button">Call Emergency Services</div>
-        </div>
-    </div>
-
-    <!-- Screen 12: Settings -->
-    <div class="screen">
-        <div class="dynamic-island"></div>
-        <div class="status-bar">
-            <span>9:41</span>
-            <span>Settings</span>
-        </div>
-        <div class="content">
-            <div class="card">
-                <div class="title">Account Settings</div>
-                <div class="metric">
-                    <div>Profile</div>
-                    <div>Edit</div>
-                </div>
-                <div class="metric">
-                    <div>Notifications</div>
-                    <div>Configure</div>
+                <div style="display: grid; gap: 16px;">
+                    <button style="background: #fff; color: #FF3B30; padding: 16px; border-radius: 12px; border: none;">
+                        Call Emergency Services
+                    </button>
+                    <button style="background: rgba(255,255,255,0.2); color: #fff; padding: 16px; border-radius: 12px; border: none;">
+                        Contact Family
+                    </button>
                 </div>
             </div>
         </div>
