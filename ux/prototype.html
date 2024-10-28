@@ -3,30 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI Combined Screens</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, SF Pro Display, SF Pro Text, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        .screen-container {
-            display: grid;
-            grid-template-columns: repeat(3, 393px);
-            gap: 24px;
+        body {
+            background: #F0F2F5;
             padding: 24px;
-            background: #F5F5F7;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 393px);
+            gap: 24px;
+            margin: 0 auto;
+            max-width: fit-content;
         }
 
         .screen {
-            width: 393px;
             height: 852px;
-            background: #fff;
+            background: #FFFFFF;
             border-radius: 48px;
             overflow: hidden;
             position: relative;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .status-bar {
+            height: 44px;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
         }
 
         .dynamic-island {
@@ -41,239 +55,1278 @@
             z-index: 100;
         }
 
-        .status-bar {
-            height: 44px;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            color: #000;
-        }
-
-        .nav-bar {
-            height: 60px;
-            background: #fff;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 32px;
-            margin-bottom: 16px;
-            padding: 16px;
-            overflow-x: auto;
-            background: #fff;
-        }
-
-        .nav-item {
-            font-size: 16px;
-            color: #6B7280;
-            white-space: nowrap;
-        }
-
-        .nav-item.active {
-            color: #007AFF;
-            font-weight: 600;
-        }
-
-        .emergency-button {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 64px;
-            height: 64px;
-            background: #FF3B30;
-            border-radius: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
-        }
-
-        .card {
-            background: #fff;
-            border-radius: 20px;
-            padding: 20px;
-            margin: 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-
-        .timeline {
-            padding: 20px;
-            position: relative;
-        }
-
-        .timeline-bar {
+        .language-selector {
             position: absolute;
-            left: 30px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #E5E7EB;
+            top: 60px;
+            right: 24px;
+            z-index: 100;
         }
 
-        .timeline-item {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 24px;
+        .welcome-section {
+            padding: 24px;
+            margin-top: 40px;
         }
 
-        .timeline-dot {
-            width: 12px;
-            height: 12px;
-            background: #007AFF;
-            border-radius: 50%;
-            margin-top: 6px;
+        .welcome-text {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .tracker-card {
+            background: #F3F4F6;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 16px 24px;
         }
 
         .quick-actions {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
-            padding: 16px;
+            padding: 16px 24px;
         }
 
-        .action-button {
-            padding: 16px;
-            background: #F3F4F6;
+        .action-card {
+            background: #FFFFFF;
             border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #E5E7EB;
+        }
+
+        .language-button {
+            background: white;
+            border: 1px solid #E5E7EB;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .emergency-screen {
+            background: #EF4444;
+            color: #FFFFFF;
+        }
+
+        .emergency-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 16px 24px;
+            color: #FFFFFF;
+        }
+
+        .emergency-header {
+            padding: 24px;
             text-align: center;
-            font-weight: 600;
         }
 
-        .offline-indicator {
-            background: #FF9500;
-            color: #fff;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
+        .content-area {
+            padding: 24px;
+            height: calc(100% - 88px);
+            overflow-y: auto;
         }
 
-        .token-balance {
-            background: #34C759;
-            color: #fff;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
+        .metric-card {
+            background: #F8FAFC;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
         }
     </style>
 </head>
 <body>
-    <div class="screen-container">
-        <!-- Home Screen -->
+    <div class="grid-container">
+        <!-- English Screen -->
         <div class="screen">
             <div class="dynamic-island"></div>
             <div class="status-bar">
-                <div class="offline-indicator">Offline Mode</div>
-                <div class="token-balance">2500 Tokens</div>
+                <span>9:41</span>
+                <span>MamaAI</span>
+                <span>100%</span>
             </div>
-            <div class="nav-bar">
-                <h1 style="font-size: 24px; font-weight: 700;">Tunza Mama</h1>
-                <div style="display: flex; gap: 16px;">
-                    <span>🔍</span>
-                    <span>🔔</span>
+            <div class="language-selector">
+                <button class="language-button">
+                    🌐 English
+                    <span style="color: #6B7280">▼</span>
+                </button>
+            </div>
+            <div class="welcome-section">
+                <div class="welcome-text">Hello, Sarah</div>
+                <div>Week 24 of pregnancy</div>
+            </div>
+            <div class="tracker-card">
+                <h3>Pregnancy Timeline</h3>
+                <div style="height: 8px; background: #E5E7EB; border-radius: 4px; margin: 12px 0">
+                    <div style="width: 60%; height: 100%; background: #3B82F6; border-radius: 4px"></div>
                 </div>
-            </div>
-
-            <div class="nav-menu">
-                <div class="nav-item active">Home</div>
-                <div class="nav-item">Records</div>
-                <div class="nav-item">Community</div>
-                <div class="nav-item">Education</div>
-                <div class="nav-item">Resources</div>
-            </div>
-
-            <div class="card">
-                <h2 style="font-size: 20px; margin-bottom: 12px;">Pregnancy Timeline</h2>
-                <div style="height: 8px; background: #E5E7EB; border-radius: 4px; margin-bottom: 8px;">
-                    <div style="width: 60%; height: 100%; background: #007AFF; border-radius: 4px;"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; color: #6B7280; font-size: 14px;">
+                <div style="display: flex; justify-content: space-between">
                     <span>Week 1</span>
-                    <span>Week 24</span>
                     <span>Week 40</span>
                 </div>
             </div>
-
             <div class="quick-actions">
-                <div class="card">
+                <div class="action-card">
                     <h3>Next Visit</h3>
                     <p>Gynecologist</p>
-                    <p>Tomorrow 10:00 AM</p>
+                    <p>Tomorrow, 10:00 AM</p>
                 </div>
-                <div class="card">
-                    <h3>Health Stats</h3>
-                    <p>BP: 120/80</p>
-                    <p>Weight: 65kg</p>
+                <div class="action-card">
+                    <h3>My Health</h3>
+                    <p>2 new results</p>
+                    <p>View →</p>
                 </div>
             </div>
-
-            <div class="emergency-button">SOS</div>
         </div>
 
-        <!-- Health Records Screen -->
+        <!-- Kiswahili Screen -->
         <div class="screen">
             <div class="dynamic-island"></div>
             <div class="status-bar">
-                <div class="offline-indicator">Offline Mode</div>
-                <div class="token-balance">2500 Tokens</div>
+                <span>9:41</span>
+                <span>MamaAI</span>
+                <span>100%</span>
             </div>
-            
-            <div class="nav-bar">
-                <h1 style="font-size: 24px; font-weight: 700;">Health Records</h1>
+            <div class="language-selector">
+                <button class="language-button">
+                    🌐 Kiswahili
+                    <span style="color: #6B7280">▼</span>
+                </button>
             </div>
-
-            <div class="timeline">
-                <div class="timeline-bar"></div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div>
-                        <h3>Gynecologist Visit</h3>
-                        <p>Last week</p>
-                        <p>Normal checkup, all parameters good</p>
-                    </div>
+            <div class="welcome-section">
+                <div class="welcome-text">Hujambo, Sarah</div>
+                <div>Wiki ya 24 ya ujauzito</div>
+            </div>
+            <div class="tracker-card">
+                <h3>Ratiba ya Ujauzito</h3>
+                <div style="height: 8px; background: #E5E7EB; border-radius: 4px; margin: 12px 0">
+                    <div style="width: 60%; height: 100%; background: #3B82F6; border-radius: 4px"></div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div>
-                        <h3>Blood Tests</h3>
-                        <p>2 weeks ago</p>
-                        <p>Hemoglobin: 12.5g/dL</p>
-                    </div>
+                <div style="display: flex; justify-content: space-between">
+                    <span>Wiki 1</span>
+                    <span>Wiki 40</span>
+                </div>
+            </div>
+            <div class="quick-actions">
+                <div class="action-card">
+                    <h3>Ziara Ijayo</h3>
+                    <p>Daktari wa Uzazi</p>
+                    <p>Kesho, 10:00 AM</p>
+                </div>
+                <div class="action-card">
+                    <h3>Afya Yangu</h3>
+                    <p>Matokeo 2 mapya</p>
+                    <p>Tazama →</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dholuo Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>MamaAI</span>
+                <span>100%</span>
+            </div>
+            <div class="language-selector">
+                <button class="language-button">
+                    🌐 Dholuo
+                    <span style="color: #6B7280">▼</span>
+                </button>
+            </div>
+            <div class="welcome-section">
+                <div class="welcome-text">Ber ahinya, Sarah</div>
+                <div>Juma 24 mar ich</div>
+            </div>
+            <div class="tracker-card">
+                <h3>Ndalo mar ich</h3>
+                <div style="height: 8px; background: #E5E7EB; border-radius: 4px; margin: 12px 0">
+                    <div style="width: 60%; height: 100%; background: #3B82F6; border-radius: 4px"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between">
+                    <span>Juma 1</span>
+                    <span>Juma 40</span>
+                </div>
+            </div>
+            <div class="quick-actions">
+                <div class="action-card">
+                    <h3>Lim Mabiro</h3>
+                    <p>Daktar mar nyuol</p>
+                    <p>Kiny, 10:00 AM</p>
+                </div>
+                <div class="action-card">
+                    <h3>Ngimana</h3>
+                    <p>Duoko 2 manyien</p>
+                    <p>Ne →</p>
                 </div>
             </div>
         </div>
 
         <!-- Emergency Screen -->
-        <div class="screen" style="background: #FF3B30;">
+        <div class="screen emergency-screen">
             <div class="dynamic-island"></div>
-            <div class="status-bar" style="color: #fff;">
-                <div style="background: #fff; color: #FF3B30; padding: 4px 12px; border-radius: 12px;">
-                    Emergency Mode
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Emergency</span>
+                <span>100%</span>
+            </div>
+            <div class="emergency-header">
+                <h1 style="font-size: 32px; margin-bottom: 12px">Emergency Mode Active</h1>
+                <p>Help is on the way</p>
+            </div>
+            <div class="emergency-card">
+                <h3>Location Services Active</h3>
+                <p>Your location is being shared with emergency services</p>
+            </div>
+            <div class="emergency-card">
+                <h3>Emergency Contacts Notified</h3>
+                <p>• Dr. Sarah Johnson</p>
+                <p>• John Smith (Husband)</p>
+                <p>• City Hospital Emergency</p>
+            </div>
+            <div style="padding: 24px; text-align: center; margin-top: 24px">
+                <button style="background: white; color: #EF4444; padding: 16px 32px; border-radius: 12px; border: none; font-weight: 600">Cancel Emergency</button>
+            </div>
+        </div>
+
+        <!-- Would you like me to continue with the next set of screens? -->
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI Combined Screens</title>
+    <style>
+        /* Previous styles remain the same */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #F0F2F5;
+            padding: 24px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 393px);
+            gap: 24px;
+            margin: 0 auto;
+            max-width: fit-content;
+        }
+
+        .screen {
+            height: 852px;
+            background: #FFFFFF;
+            border-radius: 48px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Additional styles for new components */
+        .tab-bar {
+            display: flex;
+            background: #FFFFFF;
+            padding: 4px;
+            margin: 16px 24px;
+            border-radius: 12px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #6B7280;
+        }
+
+        .tab.active {
+            background: #3B82F6;
+            color: #FFFFFF;
+        }
+
+        .result-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .content-area {
+            padding: 24px;
+            height: calc(100% - 88px);
+            overflow-y: auto;
+        }
+
+        /* All previous styles remain here */
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+        <!-- Previous 4 screens remain here -->
+
+        <!-- Health Records Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Health Records</span>
+                <span>100%</span>
+            </div>
+            <div class="tab-bar">
+                <div class="tab active">Tests</div>
+                <div class="tab">Visits</div>
+                <div class="tab">Documents</div>
+            </div>
+            <div class="content-area">
+                <div class="result-card">
+                    <h3>Hemoglobin Test</h3>
+                    <p>Result: 12.5 g/dL</p>
+                    <p>Normal Range: 11.6-15 g/dL</p>
+                    <p>Date: Oct 25, 2024</p>
+                </div>
+                <div class="result-card">
+                    <h3>Blood Sugar</h3>
+                    <p>Result: 95 mg/dL</p>
+                    <p>Normal Range: 70-140 mg/dL</p>
+                    <p>Date: Oct 25, 2024</p>
+                </div>
+                <div class="result-card">
+                    <h3>Urinalysis</h3>
+                    <p>Status: Normal</p>
+                    <p>Date: Oct 25, 2024</p>
                 </div>
             </div>
-            
-            <div style="padding: 24px; color: #fff; text-align: center;">
-                <h1 style="font-size: 32px; margin-bottom: 24px;">Emergency Mode Active</h1>
-                <div style="background: rgba(255,255,255,0.2); border-radius: 20px; padding: 24px; margin-bottom: 24px;">
-                    <p>Location Services Active</p>
-                    <p>Nearest Facility: St. Mary's Hospital</p>
-                    <p>ETA: 10 minutes</p>
+        </div>
+
+        <!-- Appointments Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Appointments</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <h2 style="margin-bottom: 20px">Upcoming Visits</h2>
+                <div class="result-card">
+                    <h3>Gynecologist Consultation</h3>
+                    <p>Dr. Sarah Johnson</p>
+                    <p>Tomorrow, 10:00 AM</p>
+                    <div style="display: flex; gap: 12px; margin-top: 12px">
+                        <button style="background: #3B82F6; color: white; padding: 12px 24px; border-radius: 8px; border: none; flex: 1">Confirm</button>
+                        <button style="background: #F3F4F6; padding: 12px 24px; border-radius: 8px; border: none; flex: 1">Reschedule</button>
+                    </div>
                 </div>
-                <div style="display: grid; gap: 16px;">
-                    <button style="background: #fff; color: #FF3B30; padding: 16px; border-radius: 12px; border: none;">
-                        Call Emergency Services
+                <div class="result-card">
+                    <h3>Nurse-Midwife Review</h3>
+                    <p>Nurse Mary Williams</p>
+                    <p>Nov 5, 2024 • 2:00 PM</p>
+                    <div style="display: flex; gap: 12px; margin-top: 12px">
+                        <button style="background: #3B82F6; color: white; padding: 12px 24px; border-radius: 8px; border: none; flex: 1">Confirm</button>
+                        <button style="background: #F3F4F6; padding: 12px 24px; border-radius: 8px; border: none; flex: 1">Reschedule</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ultrasound & Scans Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Scans & Tests</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <h2>Ultrasound Schedule</h2>
+                <div class="result-card">
+                    <h3>First Trimester Scan</h3>
+                    <p>Week: 12</p>
+                    <p>Date: Completed Oct 15, 2024</p>
+                    <p style="color: #34D399">✓ Results Available</p>
+                </div>
+                <div class="result-card">
+                    <h3>Anatomy Scan</h3>
+                    <p>Week: 20</p>
+                    <p>Date: Scheduled Nov 10, 2024</p>
+                    <button style="background: #3B82F6; color: white; padding: 12px 24px; border-radius: 8px; border: none; margin-top: 12px">View Details</button>
+                </div>
+                <div class="result-card">
+                    <h3>Growth Scan</h3>
+                    <p>Week: 32</p>
+                    <p>To be scheduled</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Care Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Daily Care</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <div class="result-card">
+                    <h3>Supplements Tracker</h3>
+                    <p>Iron & Folic Acid</p>
+                    <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 12px">
+                        <div style="aspect-ratio: 1; border-radius: 8px; background: #34D399; color: white; display: flex; align-items: center; justify-content: center">M</div>
+                        <div style="aspect-ratio: 1; border-radius: 8px; background: #34D399; color: white; display: flex; align-items: center; justify-content: center">T</div>
+                        <div style="aspect-ratio: 1; border-radius: 8px; background: #34D399; color: white; display: flex; align-items: center; justify-content: center">W</div>
+                        <div style="aspect-ratio: 1; border-radius: 8px; border: 1px solid #E5E7EB; display: flex; align-items: center; justify-content: center">T</div>
+                        <div style="aspect-ratio: 1; border-radius: 8px; border: 1px solid #E5E7EB; display: flex; align-items: center; justify-content: center">F</div>
+                        <div style="aspect-ratio: 1; border-radius: 8px; border: 1px solid #E5E7EB; display: flex; align-items: center; justify-content: center">S</div>
+                        <div style="aspect-ratio: 1; border-radius: 8px; border: 1px solid #E5E7EB; display: flex; align-items: center; justify-content: center">S</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: 24px 0 16px">Educational Resources</h3>
+                <div class="result-card" style="display: flex; gap: 16px; align-items: center">
+                    <div style="width: 48px; height: 48px; background: #F3F4F6; border-radius: 12px; display: flex; align-items: center; justify-content: center">📚</div>
+                    <div>
+                        <h3>Pregnancy Stages</h3>
+                        <p>Week by week guide</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI Combined Screens</title>
+    <style>
+        /* Previous styles remain the same */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* Add styles for new components */
+        .graph-container {
+            height: 200px;
+            background: #F9FAFB;
+            border-radius: 12px;
+            margin: 16px 0;
+            display: flex;
+            align-items: flex-end;
+            padding: 16px;
+            gap: 8px;
+        }
+
+        .graph-bar {
+            flex: 1;
+            background: #3B82F6;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .community-post {
+            padding: 16px;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        /* Previous shared styles remain here */
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+        <!-- Previous screens remain here -->
+
+        <!-- Health Monitoring Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Health Metrics</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <h2 style="margin-bottom: 20px">Health Tracking</h2>
+                
+                <div class="metric-card">
+                    <h3>Blood Pressure</h3>
+                    <div style="font-size: 32px; margin: 8px 0">120/80</div>
+                    <p style="color: #34D399">Normal Range</p>
+                </div>
+
+                <div class="metric-card">
+                    <h3>Weight</h3>
+                    <div style="font-size: 32px; margin: 8px 0">65 kg</div>
+                    <p>Gained 0.5kg this week</p>
+                </div>
+
+                <h3 style="margin: 20px 0 12px">Weight Trend</h3>
+                <div class="graph-container">
+                    <div class="graph-bar" style="height: 40%"></div>
+                    <div class="graph-bar" style="height: 45%"></div>
+                    <div class="graph-bar" style="height: 50%"></div>
+                    <div class="graph-bar" style="height: 55%"></div>
+                    <div class="graph-bar" style="height: 58%"></div>
+                    <div class="graph-bar" style="height: 62%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Support Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Community</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px">
+                    <h2>Community</h2>
+                    <button style="background: #3B82F6; color: white; padding: 8px 16px; border-radius: 8px; border: none">New Post</button>
+                </div>
+
+                <div class="community-post">
+                    <h3>Morning Sickness Tips</h3>
+                    <p style="margin: 8px 0">What helped me during my first trimester...</p>
+                    <div style="display: flex; gap: 12px; margin-top: 8px">
+                        <span style="color: #6B7280">15 replies</span>
+                        <span style="color: #6B7280">2h ago</span>
+                    </div>
+                </div>
+
+                <div class="community-post">
+                    <h3>Finding the Right Hospital</h3>
+                    <p style="margin: 8px 0">Looking for recommendations...</p>
+                    <div style="display: flex; gap: 12px; margin-top: 8px">
+                        <span style="color: #6B7280">23 replies</span>
+                        <span style="color: #6B7280">5h ago</span>
+                    </div>
+                </div>
+
+                <h3 style="margin: 24px 0 16px">Support Groups</h3>
+                <div class="result-card">
+                    <h3>First Time Moms</h3>
+                    <p>326 members</p>
+                    <button style="background: #3B82F6; color: white; padding: 8px 16px; border-radius: 8px; border: none; margin-top: 12px">Join Group</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Birth Plan Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Birth Plan</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <h2 style="margin-bottom: 24px">Birth Plan</h2>
+
+                <div style="margin-bottom: 24px">
+                    <h3>Delivery Preferences</h3>
+                    <div class="checklist-item">
+                        <input type="checkbox" checked>
+                        <span>Natural delivery preferred</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" checked>
+                        <span>Partner present during delivery</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 24px">
+                    <h3>Hospital Bag Checklist</h3>
+                    <div class="checklist-item">
+                        <input type="checkbox" checked>
+                        <span>Comfortable clothes</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox">
+                        <span>Toiletries</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 24px">
+                    <h3>Emergency Contacts</h3>
+                    <div class="result-card">
+                        <p>Dr. Sarah Johnson</p>
+                        <p style="color: #6B7280">+1 234-567-8900</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab Results Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Lab Results</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <h2 style="margin-bottom: 20px">Lab Results</h2>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid #E5E7EB">
+                    <div>
+                        <h3>Complete Blood Count</h3>
+                        <p style="color: #34D399">Normal</p>
+                    </div>
+                    <span style="color: #6B7280">Oct 25</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid #E5E7EB">
+                    <div>
+                        <h3>Glucose Test</h3>
+                        <p style="color: #34D399">Normal</p>
+                    </div>
+                    <span style="color: #6B7280">Oct 20</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid #E5E7EB">
+                    <div>
+                        <h3>Urinalysis</h3>
+                        <p style="color: #34D399">Normal</p>
+                    </div>
+                    <span style="color: #6B7280">Oct 18</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI Combined Screens</title>
+    <style>
+        /* Previous styles remain the same */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* Additional styles for new components */
+        .progress-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            border: 8px solid #E5E7EB;
+            border-top-color: #3B82F6;
+            margin: 20px auto;
+        }
+
+        .warning-banner {
+            background: #FEF2F2;
+            border-left: 4px solid #EF4444;
+            padding: 16px;
+            margin: 16px;
+            border-radius: 12px;
+        }
+
+        .token-card {
+            background: linear-gradient(135deg, #2563EB, #60A5FA);
+            color: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin: 16px;
+        }
+
+        .notification {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin: 8px 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Previous shared styles remain here */
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+        <!-- Previous screens remain here -->
+
+        <!-- Postnatal Care Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Postnatal Care</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <h2 style="margin-bottom: 20px">Postnatal Care Plan</h2>
+
+                <div class="result-card">
+                    <h3>Recovery Tracking</h3>
+                    <div class="progress-circle"></div>
+                    <p style="text-align: center">2 weeks postpartum</p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Upcoming Checkups</h3>
+                    <div style="margin-top: 12px">
+                        <p>Postnatal Visit</p>
+                        <p style="color: #6B7280">Nov 15, 2024</p>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>Support Resources</h3>
+                    <ul style="list-style: none; margin-top: 12px">
+                        <li style="margin-bottom: 8px">• Breastfeeding Support</li>
+                        <li style="margin-bottom: 8px">• Mental Health Check</li>
+                        <li>• Physical Recovery Guide</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Baby Growth Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Baby Growth</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <h2 style="margin-bottom: 20px">Baby's Growth</h2>
+
+                <div class="result-card">
+                    <h3>Current Status</h3>
+                    <p style="margin-top: 8px">Weight: 3.2 kg</p>
+                    <p>Length: 50 cm</p>
+                    <p>Head Circumference: 35 cm</p>
+                </div>
+
+                <h3 style="margin: 20px 0 12px">Growth Chart</h3>
+                <div style="height: 200px; background: #F9FAFB; border-radius: 12px; margin: 16px 0; position: relative">
+                    <div style="position: absolute; bottom: 40px; left: 40px; right: 40px; height: 2px; background: #3B82F6"></div>
+                </div>
+
+                <div class="result-card">
+                    <h3>Milestones</h3>
+                    <div class="checklist-item">
+                        <input type="checkbox" checked>
+                        <span>Responds to sounds</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" checked>
+                        <span>Makes eye contact</span>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox">
+                        <span>Holds head up</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Danger Signs & Notifications Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Health Alerts</span>
+                <span>100%</span>
+            </div>
+            
+            <div class="warning-banner">
+                <h3 style="color: #EF4444; margin-bottom: 8px">Critical Warning Signs</h3>
+                <p>Watch for these danger signs during pregnancy:</p>
+            </div>
+
+            <div class="notification">
+                <div style="display: flex; justify-content: space-between; align-items: center">
+                    <h3 style="color: #EF4444">⚠️ Vaginal Bleeding</h3>
+                    <span style="color: #6B7280">Urgent</span>
+                </div>
+                <p style="margin-top: 8px">Seek immediate medical attention if you experience any bleeding</p>
+            </div>
+
+            <div class="notification">
+                <div style="display: flex; justify-content: space-between; align-items: center">
+                    <h3>🤒 Severe Headache</h3>
+                    <span style="color: #6B7280">Warning</span>
+                </div>
+                <p style="margin-top: 8px">Contact your healthcare provider if persistent</p>
+            </div>
+
+            <div class="notification">
+                <div style="display: flex; justify-content: space-between; align-items: center">
+                    <h3>👶 Reduced Baby Movement</h3>
+                    <span style="color: #6B7280">Alert</span>
+                </div>
+                <p style="margin-top: 8px">Monitor and report if movement decreases</p>
+            </div>
+
+            <button style="position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); background: #EF4444; color: white; padding: 16px 32px; border-radius: 12px; border: none; width: 80%">
+                Call Emergency Services
+            </button>
+        </div>
+
+        <!-- Token Rewards Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Rewards</span>
+                <span>100%</span>
+            </div>
+
+            <div class="token-card">
+                <h2 style="margin-bottom: 12px">MamaTokens Balance</h2>
+                <div style="font-size: 36px; font-weight: 700; margin-bottom: 8px">2,500</div>
+                <p>Worth ~$25 USD</p>
+            </div>
+
+            <div class="result-card" style="margin: 16px">
+                <h3>Learning Progress</h3>
+                <div style="height: 8px; background: #E5E7EB; border-radius: 4px; margin: 12px 0">
+                    <div style="width: 75%; height: 100%; background: #3B82F6; border-radius: 4px"></div>
+                </div>
+                <p>75% Complete - Prenatal Care Course</p>
+                <button style="background: #3B82F6; color: white; padding: 12px; border-radius: 8px; border: none; width: 100%; margin-top: 12px">
+                    Continue Learning (+50 Tokens)
+                </button>
+            </div>
+
+            <h3 style="margin: 16px">How to Earn</h3>
+            <div style="padding: 0 16px">
+                <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #E5E7EB">
+                    <span>Complete Course Module</span>
+                    <span>50 Tokens</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #E5E7EB">
+                    <span>Daily Health Check-in</span>
+                    <span>10 Tokens</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 12px 0">
+                    <span>Attend Appointments</span>
+                    <span>100 Tokens</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI Combined Screens</title>
+    <style>
+        /* Previous styles remain the same */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* Additional styles for blockchain components */
+        .blockchain-card {
+            background: #F8FAFC;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 16px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .chart-container {
+            height: 200px;
+            background: #F9FAFB;
+            border-radius: 12px;
+            margin: 16px;
+            padding: 16px;
+        }
+
+        /* All previous styles remain here */
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+        <!-- Previous screens remain here -->
+
+        <!-- Data Security & Analytics Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Data Security</span>
+                <span>100%</span>
+            </div>
+
+            <div class="blockchain-card">
+                <h3 style="margin-bottom: 12px">Blockchain Security</h3>
+                <p>Your data is securely stored on blockchain</p>
+                <div style="display: flex; gap: 8px; margin-top: 12px">
+                    <div style="width: 12px; height: 12px; background: #34D399; border-radius: 6px"></div>
+                    <span>Active Protection</span>
+                </div>
+            </div>
+
+            <div style="padding: 16px">
+                <h3 style="margin-bottom: 12px">Health Analytics</h3>
+                <div class="chart-container">
+                    <div style="height: 100%; display: flex; align-items: flex-end; gap: 8px">
+                        <div style="flex: 1; height: 60%; background: #3B82F6; border-radius: 4px"></div>
+                        <div style="flex: 1; height: 80%; background: #3B82F6; border-radius: 4px"></div>
+                        <div style="flex: 1; height: 40%; background: #3B82F6; border-radius: 4px"></div>
+                        <div style="flex: 1; height: 90%; background: #3B82F6; border-radius: 4px"></div>
+                        <div style="flex: 1; height: 70%; background: #3B82F6; border-radius: 4px"></div>
+                    </div>
+                </div>
+                <p style="color: #6B7280; text-align: center">Weekly Health Trends</p>
+            </div>
+
+            <div style="padding: 16px">
+                <div style="background: #F9FAFB; border-radius: 12px; padding: 16px; margin-bottom: 12px">
+                    <h3>Data Access Log</h3>
+                    <p style="color: #6B7280; margin-top: 8px">Last accessed by Dr. Johnson - 2h ago</p>
+                </div>
+
+                <div style="background: #F9FAFB; border-radius: 12px; padding: 16px">
+                    <h3>Sharing Controls</h3>
+                    <button style="background: #3B82F6; color: white; padding: 12px; border-radius: 8px; border: none; width: 100%; margin-top: 12px">
+                        Manage Access Permissions
                     </button>
-                    <button style="background: rgba(255,255,255,0.2); color: #fff; padding: 16px; border-radius: 12px; border: none;">
-                        Contact Family
-                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANC Visits Analytics Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>ANC Analytics</span>
+                <span>100%</span>
+            </div>
+            
+            <div class="content-area">
+                <div class="filter-pills">
+                    <div class="pill active">Last 30 Days</div>
+                    <div class="pill">Last Quarter</div>
+                    <div class="pill">This Year</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px">
+                    <div class="metric-card">
+                        <h3>Total ANC Visits</h3>
+                        <div style="font-size: 24px; font-weight: 600; margin-top: 8px">2,547</div>
+                        <p style="color: #16A34A">↑ 12% vs last month</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>First Visits</h3>
+                        <div style="font-size: 24px; font-weight: 600; margin-top: 8px">856</div>
+                        <p style="color: #16A34A">↑ 8% vs last month</p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>ANC Visits Distribution</h3>
+                    <div class="bar-chart">
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 80%"></div>
+                            <p style="margin-top: 8px">1st</p>
+                            <p style="color: #6B7280">856</p>
+                        </div>
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 70%"></div>
+                            <p style="margin-top: 8px">2nd</p>
+                            <p style="color: #6B7280">742</p>
+                        </div>
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 60%"></div>
+                            <p style="margin-top: 8px">3rd</p>
+                            <p style="color: #6B7280">534</p>
+                        </div>
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 40%"></div>
+                            <p style="margin-top: 8px">4th</p>
+                            <p style="color: #6B7280">415</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preventive Care Analytics Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Preventive Care</span>
+                <span>100%</span>
+            </div>
+
+            <div class="content-area">
+                <div class="metric-card">
+                    <h3>Tetanus Toxoid Coverage</h3>
+                    <div style="margin-top: 16px">
+                        <div style="display: flex; justify-content: space-between">
+                            <span>TT1</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%; background: #3B82F6"></div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-top: 12px">
+                            <span>TT2</span>
+                            <span>72%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 72%; background: #3B82F6"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Lab Tests Performed</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px">
+                        <div style="display: flex; justify-content: space-between">
+                            <span>HIV Tests</span>
+                            <span>856 tests</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 90%; background: #16A34A"></div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between">
+                            <span>Hemoglobin</span>
+                            <span>742 tests</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%; background: #16A34A"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaAI Combined Screens</title>
+    <style>
+        /* Previous styles remain */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* Additional styles for metrics and filters */
+        .filter-pills {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            padding: 6px 12px;
+            border-radius: 16px;
+            background: #F3F4F6;
+            font-size: 14px;
+        }
+
+        .pill.active {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            height: 200px;
+            padding: 20px 0;
+        }
+
+        .bar {
+            flex: 1;
+            background: #3B82F6;
+            border-radius: 4px 4px 0 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+        <!-- Previous screens remain here -->
+
+        <!-- Teenage Pregnancy Analysis -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Teenage Pregnancy</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <div class="chart-container">
+                    <h3>Teenage Pregnancy Analysis</h3>
+                    <div style="display: flex; justify-content: space-between; margin-top: 12px">
+                        <div>
+                            <p style="color: #6B7280">Total Cases</p>
+                            <h2>127</h2>
+                        </div>
+                        <div>
+                            <p style="color: #DC2626">↑ 15% increase</p>
+                            <p style="color: #6B7280">vs last month</p>
+                        </div>
+                    </div>
+                    <div class="bar-chart">
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 60%"></div>
+                            <p style="margin-top: 8px">13-14</p>
+                        </div>
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 80%"></div>
+                            <p style="margin-top: 8px">15-16</p>
+                        </div>
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 70%"></div>
+                            <p style="margin-top: 8px">17-18</p>
+                        </div>
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 40%"></div>
+                            <p style="margin-top: 8px">19</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SP (Malaria Prophylaxis) Screen -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Malaria Prevention</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <div class="metric-card">
+                    <h3>SP (Malaria Prophylaxis)</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px">
+                        <div>
+                            <h4>Doses Given</h4>
+                            <div style="font-size: 24px; font-weight: 600">1,247</div>
+                        </div>
+                        <div>
+                            <h4>Coverage</h4>
+                            <div style="font-size: 24px; font-weight: 600">78%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <h3>LLIN Distribution</h3>
+                    <div style="display: flex; justify-content: space-between; margin-top: 12px">
+                        <div>
+                            <div style="font-size: 24px; font-weight: 600">1,856</div>
+                            <p style="color: #6B7280">Nets Distributed</p>
+                        </div>
+                        <div>
+                            <div style="font-size: 24px; font-weight: 600">92%</div>
+                            <p style="color: #6B7280">Coverage</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- High Risk Categories -->
+        <div class="screen">
+            <div class="dynamic-island"></div>
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>Risk Categories</span>
+                <span>100%</span>
+            </div>
+            <div class="content-area">
+                <h3>High Risk Categories</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px">
+                    <div class="metric-card">
+                        <h4>Teenage Pregnancies</h4>
+                        <div style="font-size: 24px; font-weight: 600; color: #DC2626">15%</div>
+                        <p style="color: #6B7280">of total cases</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>High BP Cases</h4>
+                        <div style="font-size: 24px; font-weight: 600; color: #DC2626">8%</div>
+                        <p style="color: #6B7280">of total cases</p>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>Risk Distribution</h3>
+                    <div class="bar-chart">
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 70%"></div>
+                            <p style="margin-top: 8px">BP</p>
+                        </div>
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 85%"></div>
+                            <p style="margin-top: 8px">Age</p>
+                        </div>
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 45%"></div>
+                            <p style="margin-top: 8px">BMI</p>
+                        </div>
+                        <div style="flex: 1; text-align: center">
+                            <div class="bar" style="height: 60%"></div>
+                            <p style="margin-top: 8px">Other</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
