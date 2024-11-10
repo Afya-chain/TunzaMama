@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TunzaMama - Health Records</title>
+    <style>
+        :root {
+            --primary: #FF6B98;
+            --primary-dark: #FF4B84;
+            --secondary: #4A90E2;
+            --accent: #FFD6E4;
+            --background: #FFF5F8;
+            --success: #2ECC71;
+            --warning: #F1C40F;
+            --danger: #E74C3C;
+            --text: #333333;
+            --gray: #666666;
+            --light-gray: #F0F0F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255,107,152,0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(74,144,226,0.1) 0%, transparent 20%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        .records-container {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .records-title {
+            font-size: 2rem;
+            color: var(--primary-dark);
+        }
+
+        .tab-container {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 1rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .records-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .record-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .record-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .record-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .record-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+
+        .status-normal {
+            background: #E8F8F0;
+            color: var(--success);
+        }
+
+        .status-attention {
+            background: #FEF5E7;
+            color: var(--warning);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .result-item {
+            background: var(--light-gray);
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .result-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .date-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--light-gray);
+            color: var(--text);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            color: var(--primary);
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .summary-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .records-container {
+                padding: 1rem;
+            }
+
+            .records-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .tab {
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">TunzaMama</a>
+            <nav class="nav-links">
+                <a href="#">Dashboard</a>
+                <a href="#">Calendar</a>
+                <a href="#">Records</a>
+                <a href="#">Profile</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="records-container">
+        <div class="records-header">
+            <h1 class="records-title">Health Records</h1>
+            <button class="action-btn btn-primary">+ Add Record</button>
+        </div>
+
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h3>Total Tests</h3>
+                <div class="summary-value">24</div>
+                <p>Last test: 2 days ago</p>
+            </div>
+            <div class="summary-card">
+                <h3>Appointments</h3>
+                <div class="summary-value">12</div>
+                <p>Next: Tomorrow</p>
+            </div>
+            <div class="summary-card">
+                <h3>Documents</h3>
+                <div class="summary-value">8</div>
+                <p>All up to date</p>
+            </div>
+        </div>
+
+        <div class="tab-container">
+            <div class="tabs">
+                <div class="tab active">Test Results</div>
+                <div class="tab">Appointments</div>
+                <div class="tab">Documents</div>
+                <div class="tab">Medications</div>
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active">All Records</button>
+                <button class="filter-btn">Last Month</button>
+                <button class="filter-btn">This Trimester</button>
+                <button class="filter-btn">Important</button>
+            </div>
+
+            <div class="records-grid">
+                <!-- Blood Test Record -->
+                <div class="record-card">
+                    <div class="record-card-header">
+                        <div class="record-icon">🔬</div>
+                        <span class="record-status status-normal">Normal</span>
+                    </div>
+                    <h3>Complete Blood Count</h3>
+                    <p class="date-label">October 25, 2024</p>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-value">12.5</div>
+                            <div>Hemoglobin</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">95</div>
+                            <div>Blood Sugar</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn btn-primary">View Details</button>
+                        <button class="action-btn btn-secondary">Share</button>
+                    </div>
+                </div>
+
+                <!-- Ultrasound Record -->
+                <div class="record-card">
+                    <div class="record-card-header">
+                        <div class="record-icon">📷</div>
+                        <span class="record-status status-normal">Completed</span>
+                    </div>
+                    <h3>Ultrasound Scan</h3>
+                    <p class="date-label">October 20, 2024</p>
+                    <p>Anatomy scan showing normal development</p>
+                    <div class="action-buttons">
+                        <button class="action-btn btn-primary">View Report</button>
+                        <button class="action-btn btn-secondary">Download</button>
+                    </div>
+                </div>
+
+                <!-- Blood Pressure Record -->
+                <div class="record-card">
+                    <div class="record-card-header">
+                        <div class="record-icon">❤️</div>
+                        <span class="record-status status-attention">Monitor</span>
+                    </div>
+                    <h3>Blood Pressure Log</h3>
+                    <p class="date-label">Today</p>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-value">120/80</div>
+                            <div>Morning</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">118/78</div>
+                            <div>Evening</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn btn-primary">Track History</button>
+                        <button class="action-btn btn-secondary">Add Reading</button>
+                    </div>
+                </div>
+
+                <!-- Glucose Test Record -->
+                <div class="record-card">
+                    <div class="record-card-header">
+                        <div class="record-icon">📊</div>
+                        <span class="record-status status-normal">Normal</span>
+                    </div>
+                    <h3>Glucose Tolerance Test</h3>
+                    <p class="date-label">October 18, 2024</p>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-value">85</div>
+                            <div>Fasting</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value">120</div>
+                            <div>2 Hour</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn btn-primary">View Details</button>
+                        <button class="action-btn btn-secondary">Share</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TunzaMama - Week 24 Guide</title>
+    <style>
+        :root {
+            --primary: #FF6B98;
+            --primary-dark: #FF4B84;
+            --secondary: #4A90E2;
+            --accent: #FFD6E4;
+            --background: #FFF5F8;
+            --success: #2ECC71;
+            --warning: #F1C40F;
+            --danger: #E74C3C;
+            --text: #333333;
+            --gray: #666666;
+            --light-gray: #F0F0F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .guide-container {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        .week-navigation {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .week-list {
+            list-style: none;
+            margin-top: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .week-item {
+            padding: 0.75rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .week-item:hover {
+            background: var(--light-gray);
+        }
+
+        .week-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .week-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .milestone-card {
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            background: var(--accent);
+        }
+
+        .development-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .development-card {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .development-icon {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .checklist {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .checkbox.checked {
+            background: var(--primary);
+            color: white;
+        }
+
+        .interactive-section {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .quiz-option {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quiz-option:hover {
+            background: var(--accent);
+        }
+
+        .resource-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .resource-card {
+            background: var(--light-gray);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .action-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            margin: 2rem 0 1rem;
+            font-size: 1.5rem;
+        }
+
+        .info-box {
+            background: var(--accent);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        @media (max-width: 1024px) {
+            .guide-container {
+                grid-template-columns: 1fr;
+            }
+
+            .week-navigation {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="guide-container">
+        <!-- Week Navigation Sidebar -->
+        <aside class="week-navigation">
+            <h2>Pregnancy Timeline</h2>
+            <div class="week-list">
+                <div class="week-item">First Trimester</div>
+                <div class="week-item">Week 1-4</div>
+                <div class="week-item">Week 5-8</div>
+                <div class="week-item">Week 9-13</div>
+                <div class="week-item">Second Trimester</div>
+                <div class="week-item">Week 14-17</div>
+                <div class="week-item">Week 18-22</div>
+                <div class="week-item active">Week 24 (Current)</div>
+                <div class="week-item">Week 25-27</div>
+                <div class="week-item">Third Trimester</div>
+                <div class="week-item">Week 28-31</div>
+                <div class="week-item">Week 32-35</div>
+                <div class="week-item">Week 36-40</div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="week-content">
+            <h1>Week 24: Your Baby's Development</h1>
+            
+            <div class="milestone-card">
+                <h3>🌟 Key Milestones</h3>
+                <p>Your baby is now about the size of a corn (30 cm) and weighs around 600 grams</p>
+            </div>
+
+            <div class="development-grid">
+                <div class="development-card">
+                    <div class="development-icon">👶</div>
+                    <h3>Size</h3>
+                    <p>30 centimeters</p>
+                </div>
+                <div class="development-card">
+                    <div class="development-icon">⚖️</div>
+                    <h3>Weight</h3>
+                    <p>600 grams</p>
+                </div>
+                <div class="development-card">
+                    <div class="development-icon">🫀</div>
+                    <h3>Heart Rate</h3>
+                    <p>120-160 bpm</p>
+                </div>
+            </div>
+
+            <h2 class="section-title">This Week's Development</h2>
+            <p>Your baby's facial features are becoming more defined. The inner ear is now developed enough to start functioning, and your baby may be able to hear your voice!</p>
+
+            <div class="info-box">
+                <h3>Did You Know? 🤔</h3>
+                <p>Your baby's taste buds are now fully formed, and they can taste the different flavors that come through the amniotic fluid.</p>
+            </div>
+
+            <h2 class="section-title">Your Weekly Checklist</h2>
+            <ul class="checklist">
+                <li class="checklist-item">
+                    <div class="checkbox checked">✓</div>
+                    <span>Take prenatal vitamins</span>
+                </li>
+                <li class="checklist-item">
+                    <div class="checkbox"></div>
+                    <span>Record baby movements</span>
+                </li>
+                <li class="checklist-item">
+                    <div class="checkbox"></div>
+                    <span>Schedule glucose screening test</span>
+                </li>
+                <li class="checklist-item">
+                    <div class="checkbox"></div>
+                    <span>Start planning nursery</span>
+                </li>
+            </ul>
+
+            <h2 class="section-title">Quick Knowledge Check</h2>
+            <div class="interactive-section">
+                <h3>What's happening with your baby this week?</h3>
+                <div class="quiz-options">
+                    <div class="quiz-option">Taste buds developing</div>
+                    <div class="quiz-option">First movements</div>
+                    <div class="quiz-option">Eyes opening</div>
+                    <div class="quiz-option">Hair growing</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">Additional Resources</h2>
+            <div class="resource-list">
+                <div class="resource-card">
+                    <h3>📺 Video Guide</h3>
+                    <p>Week 24 Development</p>
+                    <button class="action-btn">Watch Now</button>
+                </div>
+                <div class="resource-card">
+                    <h3>📝 Article</h3>
+                    <p>Nutrition Tips</p>
+                    <button class="action-btn">Read More</button>
+                </div>
+                <div class="resource-card">
+                    <h3>🎯 Exercise</h3>
+                    <p>Safe Workouts</p>
+                    <button class="action-btn">Start Now</button>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 2rem;">
+                <h3>Coming Up Next Week 👀</h3>
+                <p>Next week, you'll learn about your baby's lung development and what to expect at your next prenatal visit.</p>
+                <button class="action-btn" style="margin-top: 1rem;">Preview Week 25</button>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

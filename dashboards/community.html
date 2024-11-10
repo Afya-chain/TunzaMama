@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TunzaMama - Community Support</title>
+    <style>
+        :root {
+            --primary: #FF6B98;
+            --primary-dark: #FF4B84;
+            --secondary: #4A90E2;
+            --accent: #FFD6E4;
+            --background: #FFF5F8;
+            --success: #2ECC71;
+            --warning: #F1C40F;
+            --danger: #E74C3C;
+            --text: #333333;
+            --gray: #666666;
+            --light-gray: #F0F0F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255,107,152,0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(74,144,226,0.1) 0%, transparent 20%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .community-container {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 2rem;
+        }
+
+        .left-sidebar, .right-sidebar {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            height: fit-content;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .create-post {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .post-input {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 10px;
+            margin: 1rem 0;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .post-header {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .post-user {
+            flex: 1;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--light-gray);
+            color: var(--text);
+        }
+
+        .user-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+
+        .badge-expert {
+            background: #E8F8F0;
+            color: var(--success);
+        }
+
+        .badge-verified {
+            background: var(--accent);
+            color: var(--primary-dark);
+        }
+
+        .group-list {
+            list-style: none;
+        }
+
+        .group-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .group-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .group-info {
+            flex: 1;
+        }
+
+        .topic-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .topic-item {
+            padding: 0.5rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .topic-item:hover {
+            background: var(--light-gray);
+        }
+
+        .topic-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            background: var(--accent);
+            color: var(--primary-dark);
+            font-size: 0.85rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .expert-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .expert-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .engagement-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .comment-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .comment {
+            margin-left: 3rem;
+            padding: 1rem;
+            background: var(--light-gray);
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 1200px) {
+            .community-container {
+                grid-template-columns: 1fr;
+            }
+
+            .left-sidebar, .right-sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="community-container">
+        <!-- Left Sidebar -->
+        <aside class="left-sidebar">
+            <h2 class="section-title">👥 My Groups</h2>
+            <ul class="group-list">
+                <li class="group-item">
+                    <div class="group-icon">👶</div>
+                    <div class="group-info">
+                        <h3>First Time Moms</h3>
+                        <p>326 members</p>
+                    </div>
+                </li>
+                <li class="group-item">
+                    <div class="group-icon">🏥</div>
+                    <div class="group-info">
+                        <h3>Nairobi Moms</h3>
+                        <p>1,245 members</p>
+                    </div>
+                </li>
+                <li class="group-item">
+                    <div class="group-icon">🌟</div>
+                    <div class="group-info">
+                        <h3>Natural Birth</h3>
+                        <p>528 members</p>
+                    </div>
+                </li>
+            </ul>
+
+            <h2 class="section-title" style="margin-top: 2rem">🏷️ Popular Topics</h2>
+            <div>
+                <span class="topic-tag">#FirstTrimester</span>
+                <span class="topic-tag">#MorningTips</span>
+                <span class="topic-tag">#NutritionAdvice</span>
+                <span class="topic-tag">#Exercise</span>
+                <span class="topic-tag">#BirthStories</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Create Post -->
+            <div class="create-post">
+                <h2 class="section-title">Share Your Experience</h2>
+                <textarea class="post-input" placeholder="What's on your mind?" rows="3"></textarea>
+                <div class="post-actions">
+                    <div>
+                        <button class="action-btn btn-secondary">📷 Photo</button>
+                        <button class="action-btn btn-secondary">🏷️ Topic</button>
+                    </div>
+                    <button class="action-btn btn-primary">Post</button>
+                </div>
+            </div>
+
+            <!-- Posts -->
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="avatar">👩</div>
+                    <div class="post-user">
+                        <h3>Sarah Johnson
+                            <span class="user-badge badge-verified">Verified Mom</span>
+                        </h3>
+                        <p>Posted 2 hours ago</p>
+                    </div>
+                </div>
+                <p>Tips that helped me with morning sickness: Ginger tea first thing in the morning, small frequent meals, and keeping crackers by the bedside. What worked for you?</p>
+                <div class="engagement-stats">
+                    <span>15 likes</span>
+                    <span>8 comments</span>
+                    <span>3 shares</span>
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn btn-secondary">👍 Like</button>
+                    <button class="action-btn btn-secondary">💬 Comment</button>
+                    <button class="action-btn btn-secondary">📤 Share</button>
+                </div>
+                <div class="comment-section">
+                    <div class="comment">
+                        <strong>Emily W.</strong>
+                        <p>Lemon water helped me a lot too! And avoiding strong smells.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-header">
+                    <div class="avatar">👨</div>
+                    <div class="post-user">
+                        <h3>Dr. James Miller
+                            <span class="user-badge badge-expert">Expert</span>
+                        </h3>
+                        <p>Posted 5 hours ago</p>
+                    </div>
+                </div>
+                <p>Important reminder: Regular prenatal checkups are crucial for monitoring both mother and baby's health. Here are key things to discuss with your healthcare provider...</p>
+                <div class="engagement-stats">
+                    <span>32 likes</span>
+                    <span>12 comments</span>
+                    <span>20 shares</span>
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn btn-secondary">👍 Like</button>
+                    <button class="action-btn btn-secondary">💬 Comment</button>
+                    <button class="action-btn btn-secondary">📤 Share</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <h2 class="section-title">👩‍⚕️ Online Experts</h2>
+            <ul class="expert-list">
+                <li class="expert-item">
+                    <div class="avatar">👩‍⚕️</div>
+                    <div>
+                        <h3>Dr. Sarah Johnson</h3>
+                        <p>OB/GYN • Online</p>
+                    </div>
+                </li>
+                <li class="expert-item">
+                    <div class="avatar">👩‍⚕️</div>
+                    <div>
+                        <h3>Nurse Mary</h3>
+                        <p>Midwife • Online</p>
+                    </div>
+                </li>
+            </ul>
+
+            <h2 class="section-title" style="margin-top: 2rem">📅 Upcoming Events</h2>
+            <ul class="topic-list">
+                <li class="topic-item">
+                    <h4>Prenatal Yoga Class</h4>
+                    <p>Tomorrow, 10:00 AM</p>
+                </li>
+                <li class="topic-item">
+                    <h4>Nutrition Workshop</h4>
+                    <p>Saturday, 2:00 PM</p>
+                </li>
+                <li class="topic-item">
+                    <h4>Q&A with Dr. Miller</h4>
+                    <p>Sunday, 4:00 PM</p>
+                </li>
+            </ul>
+        </aside>
+    </div>
+</body>
+</html>

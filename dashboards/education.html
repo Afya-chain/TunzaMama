@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TunzaMama - Educational Hub</title>
+    <style>
+        :root {
+            --primary: #FF6B98;
+            --primary-dark: #FF4B84;
+            --secondary: #4A90E2;
+            --accent: #FFD6E4;
+            --background: #FFF5F8;
+            --success: #2ECC71;
+            --warning: #F1C40F;
+            --danger: #E74C3C;
+            --text: #333333;
+            --gray: #666666;
+            --light-gray: #F0F0F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255,107,152,0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(74,144,226,0.1) 0%, transparent 20%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .education-container {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+
+        .education-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .education-header h1 {
+            color: var(--primary-dark);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 2rem auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 25px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-size: 1rem;
+        }
+
+        .learning-paths {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .path-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .path-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .path-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--light-gray);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .featured-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .content-card {
+            background: var(--light-gray);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .content-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .content-image {
+            height: 150px;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .content-info {
+            padding: 1.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            background: var(--accent);
+            color: var(--primary-dark);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .experts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .expert-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .expert-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .achievement-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .action-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title h2 {
+            color: var(--primary-dark);
+            font-size: 1.5rem;
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .pill {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pill.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .education-container {
+                padding: 1rem;
+            }
+
+            .education-header h1 {
+                font-size: 2rem;
+            }
+
+            .learning-paths {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="education-container">
+        <header class="education-header">
+            <h1>Educational Hub</h1>
+            <p>Your comprehensive guide to pregnancy and motherhood</p>
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Search for topics, guides, or answers...">
+            </div>
+        </header>
+
+        <div class="learning-paths">
+            <div class="path-card">
+                <div class="path-icon">📚</div>
+                <h3>Pregnancy Basics</h3>
+                <p>Essential knowledge for your pregnancy journey</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 75%"></div>
+                </div>
+                <span>75% Complete</span>
+            </div>
+
+            <div class="path-card">
+                <div class="path-icon">🍎</div>
+                <h3>Nutrition Guide</h3>
+                <p>Healthy eating for you and your baby</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 45%"></div>
+                </div>
+                <span>45% Complete</span>
+            </div>
+
+            <div class="path-card">
+                <div class="path-icon">🏃‍♀️</div>
+                <h3>Exercise & Wellness</h3>
+                <p>Safe activities during pregnancy</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 30%"></div>
+                </div>
+                <span>30% Complete</span>
+            </div>
+        </div>
+
+        <div class="featured-content">
+            <div class="section-title">
+                <h2>Featured Content</h2>
+                <a href="#" class="action-btn">View All</a>
+            </div>
+
+            <div class="filter-pills">
+                <div class="pill active">All</div>
+                <div class="pill">Videos</div>
+                <div class="pill">Articles</div>
+                <div class="pill">Interactive Guides</div>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-card">
+                    <div class="content-image">📺</div>
+                    <div class="content-info">
+                        <span class="tag">Video</span>
+                        <h3>Understanding Your First Trimester</h3>
+                        <p>15 min watch</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-image">📝</div>
+                    <div class="content-info">
+                        <span class="tag">Article</span>
+                        <h3>Essential Nutrients During Pregnancy</h3>
+                        <p>10 min read</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-image">🎮</div>
+                    <div class="content-info">
+                        <span class="tag">Interactive</span>
+                        <h3>Baby Development Timeline</h3>
+                        <p>Interactive Guide</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="experts-section">
+            <div class="section-title">
+                <h2>Learn from Experts</h2>
+            </div>
+
+            <div class="expert-card">
+                <div class="expert-avatar">👩‍⚕️</div>
+                <div>
+                    <h3>Dr. Sarah Johnson</h3>
+                    <p>OB/GYN Specialist</p>
+                    <div class="achievement-badges">
+                        <div class="badge">🏆</div>
+                        <div class="badge">⭐</div>
+                        <div class="badge">📚</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="expert-card">
+                <div class="expert-avatar">👩‍⚕️</div>
+                <div>
+                    <h3>Nurse Mary Williams</h3>
+                    <p>Midwife Specialist</p>
+                    <div class="achievement-badges">
+                        <div class="badge">🏆</div>
+                        <div class="badge">💝</div>
+                        <div class="badge">📚</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="featured-content">
+            <div class="section-title">
+                <h2>Your Next Lessons</h2>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-card">
+                    <div class="content-image">🎯</div>
+                    <div class="content-info">
+                        <span class="tag">Week 24</span>
+                        <h3>Understanding Baby's Movement</h3>
+                        <p>Start Learning →</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-image">💪</div>
+                    <div class="content-info">
+                        <span class="tag">Exercise</span>
+                        <h3>Safe Pregnancy Exercises</h3>
+                        <p>Continue Learning →</p>
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="content-image">🧘‍♀️</div>
+                    <div class="content-info">
+                        <span class="tag">Wellness</span>
+                        <h3>Prenatal Yoga Basics</h3>
+                        <p>Start Learning →</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
