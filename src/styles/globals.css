@@ -1,0 +1,53 @@
+/* src/styles/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply antialiased text-gray-800 bg-gray-50;
+  }
+}
+
+@layer components {
+  .checkbox-base {
+    @apply w-5 h-5 text-purple-600 rounded border-gray-300 focus:ring-purple-500;
+  }
+  
+  .btn-base {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors;
+  }
+  
+  .btn-primary {
+    @apply btn-base bg-purple-600 text-white hover:bg-purple-700;
+  }
+  
+  .btn-secondary {
+    @apply btn-base bg-purple-100 text-purple-700 hover:bg-purple-200;
+  }
+}
+
+/* Smooth page transitions */
+.page-transition {
+  @apply transition-opacity duration-200;
+}
+
+.page-enter {
+  @apply opacity-0;
+}
+
+.page-enter-active {
+  @apply opacity-100;
+}
+
+.page-exit {
+  @apply opacity-100;
+}
+
+.page-exit-active {
+  @apply opacity-0;
+}

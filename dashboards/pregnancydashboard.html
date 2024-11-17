@@ -272,6 +272,101 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--gray);
+        }
+
+        .symptom-form, .kick-counter-form, .weight-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 0.5rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+        }
+
+        .counter-display {
+            font-size: 3rem;
+            text-align: center;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+
+        .counter-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .chart-container {
+            height: 200px;
+            margin-top: 1rem;
+        }
+
+        .water-progress {
+            position: relative;
+            width: 100%;
+            height: 30px;
+            background: var(--light-gray);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .water-fill {
+            height: 100%;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .goal-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .goal-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -420,6 +515,211 @@
                 🚨 Emergency Assistance
             </button>
         </div>
+
+        <div class="modal" id="symptomModal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Track Symptoms</h2>
+                <form class="symptom-form" id="symptomForm">
+                    <div class="form-group">
+                        <label for="symptomType">Type of Symptom</label>
+                        <select id="symptomType" required>
+                            <option value="">Select symptom</option>
+                            <option value="nausea">Nausea</option>
+                            <option value="fatigue">Fatigue</option>
+                            <option value="headache">Headache</option>
+                            <option value="backPain">Back Pain</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="symptomSeverity">Severity (1-10)</label>
+                        <input type="range" id="symptomSeverity" min="1" max="10" value="5">
+                        <output id="severityOutput">5</output>
+                    </div>
+                    <div class="form-group">
+                        <label for="symptomNotes">Notes</label>
+                        <textarea id="symptomNotes"></textarea>
+                    </div>
+                    <button type="submit" class="action-btn">Save Symptoms</button>
+                </form>
+            </div>
+        </div>
+    
+        <div class="modal" id="kickCounterModal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Kick Counter</h2>
+                <div class="counter-display" id="kickCount">0</div>
+                <div class="counter-buttons">
+                    <button class="action-btn" id="addKick">Record Kick</button>
+                    <button class="action-btn" id="resetKicks">Reset</button>
+                </div>
+                <p>Session Duration: <span id="kickTimer">00:00</span></p>
+            </div>
+        </div>
+    
+        <div class="modal" id="weightModal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Weight Log</h2>
+                <form class="weight-form" id="weightForm">
+                    <div class="form-group">
+                        <label for="weightInput">Current Weight (kg)</label>
+                        <input type="number" id="weightInput" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="weightDate">Date</label>
+                        <input type="date" id="weightDate" required>
+                    </div>
+                    <button type="submit" class="action-btn">Save Weight</button>
+                </form>
+                <div class="chart-container">
+                    <canvas id="weightChart"></canvas>
+                </div>
+            </div>
+        </div>
+    
+        <script>
+            // Modal functionality
+            const modals = {
+                symptom: document.getElementById('symptomModal'),
+                kickCounter: document.getElementById('kickCounterModal'),
+                weight: document.getElementById('weightModal')
+            };
+    
+            // Action card click handlers
+            document.querySelectorAll('.action-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('h3').textContent.toLowerCase();
+                    if (title.includes('symptoms')) {
+                        modals.symptom.style.display = 'flex';
+                    } else if (title.includes('kick')) {
+                        modals.kickCounter.style.display = 'flex';
+                    } else if (title.includes('weight')) {
+                        modals.weight.style.display = 'flex';
+                        initializeWeightChart();
+                    }
+                });
+            });
+    
+            // Close modal functionality
+            document.querySelectorAll('.close-modal').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    this.closest('.modal').style.display = 'none';
+                });
+            });
+    
+            // Symptom tracking
+            const symptomForm = document.getElementById('symptomForm');
+            const severityInput = document.getElementById('symptomSeverity');
+            const severityOutput = document.getElementById('severityOutput');
+    
+            severityInput.addEventListener('input', function() {
+                severityOutput.value = this.value;
+            });
+    
+            symptomForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Save symptom data
+                const symptomData = {
+                    type: document.getElementById('symptomType').value,
+                    severity: severityInput.value,
+                    notes: document.getElementById('symptomNotes').value,
+                    date: new Date().toISOString()
+                };
+                console.log('Symptom logged:', symptomData);
+                modals.symptom.style.display = 'none';
+                this.reset();
+            });
+    
+            // Kick counter
+            let kicks = 0;
+            let kickTimer = null;
+            let startTime = null;
+    
+            document.getElementById('addKick').addEventListener('click', function() {
+                if (!startTime) startTime = new Date();
+                kicks++;
+                document.getElementById('kickCount').textContent = kicks;
+                updateKickTimer();
+            });
+    
+            document.getElementById('resetKicks').addEventListener('click', function() {
+                kicks = 0;
+                startTime = null;
+                document.getElementById('kickCount').textContent = '0';
+                document.getElementById('kickTimer').textContent = '00:00';
+                if (kickTimer) clearInterval(kickTimer);
+            });
+    
+            function updateKickTimer() {
+                if (!kickTimer) {
+                    kickTimer = setInterval(() => {
+                        const elapsed = Math.floor((new Date() - startTime) / 1000);
+                        const minutes = Math.floor(elapsed / 60);
+                        const seconds = elapsed % 60;
+                        document.getElementById('kickTimer').textContent = 
+                            `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    }, 1000);
+                }
+            }
+    
+            // Weight tracking chart
+            function initializeWeightChart() {
+                const ctx = document.getElementById('weightChart').getContext('2d');
+                const weightData = {
+                    labels: ['Week 20', 'Week 21', 'Week 22', 'Week 23', 'Week 24'],
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: [62, 62.5, 63.2, 64.1, 65],
+                        borderColor: 'rgb(255, 107, 152)',
+                        tension: 0.4
+                    }]
+                };
+    
+                new Chart(ctx, {
+                    type: 'line',
+                    data: weightData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: false
+                            }
+                        }
+                    }
+                });
+            }
+    
+            // Goals tracking
+            const waterGoal = {
+                current: 5,
+                total: 8
+            };
+    
+            function updateWaterProgress() {
+                const waterFill = document.querySelector('.water-fill');
+                const percentage = (waterGoal.current / waterGoal.total) * 100;
+                waterFill.style.width = `${percentage}%`;
+            }
+    
+            // Emergency button
+            document.querySelector('.emergency-button').addEventListener('click', function() {
+                const confirmed = confirm('Are you experiencing a medical emergency? Click OK to call emergency services.');
+                if (confirmed) {
+                    // In a real application, this would trigger emergency protocols
+                    alert('Connecting to emergency services...');
+                }
+            });
+    
+            // Initialize charts and progress bars
+            document.addEventListener('DOMContentLoaded', function() {
+                updateWaterProgress();
+            });
+
+            
+        </script>
     </main>
 </body>
 </html>
